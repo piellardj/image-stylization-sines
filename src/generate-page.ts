@@ -82,7 +82,7 @@ const data = {
                     type: Demopage.supportedControls.Checkbox,
                     title: "True intensity",
                     id: "true-intensity-checkbox-id",
-                    checked: false
+                    checked: true
                 },
                 {
                     type: Demopage.supportedControls.Range,
