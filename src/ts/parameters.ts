@@ -8,6 +8,7 @@ const controlId = {
     LINE_WIDTH: "line-width-range-id",
     INVERT_COLORS: "invert-colors-checkbox-id",
     BLUR: "blur-range-id",
+    TRUE_INTENSITY: "true-intensity-checkbox-id",
     DOWNLOAD: "result-download-id",
 };
 
@@ -24,6 +25,7 @@ Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINE_WIDTH, triggerRedraw);
 Page.Checkbox.addObserver(controlId.INVERT_COLORS, triggerRedraw);
+Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
 Page.Canvas.Observers.canvasResize.push(triggerRedraw);
 
 abstract class Parameters {
@@ -63,6 +65,11 @@ abstract class Parameters {
     public static get invertColors(): boolean {
         return Page.Checkbox.isChecked(controlId.INVERT_COLORS);
     }
+
+    public static get trueIntensity(): boolean {
+        return Page.Checkbox.isChecked(controlId.TRUE_INTENSITY);
+    }
+
 
     public static addRedrawObserver(callback: RedrawObserver): void {
         redrawObservers.push(callback);

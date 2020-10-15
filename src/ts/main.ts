@@ -47,6 +47,21 @@ function plot(plotter: PlotterBase): void {
 
     inputImage.resize(plotter.size.width, Parameters.verticalResolution);
 
+    let computeDarkness: (x: number, y: number) => number;
+    if (Parameters.trueIntensity) {
+        if (Parameters.invertColors) {
+            computeDarkness = (x: number, y: number) => Math.sqrt(inputImage.sample(x, y));
+        } else {
+            computeDarkness = (x: number, y: number) => Math.sqrt(1.001 - inputImage.sample(x, y));
+        }
+    } else {
+        if (Parameters.invertColors) {
+            computeDarkness = (x: number, y: number) => inputImage.sample(x, y);
+        } else {
+            computeDarkness = (x: number, y: number) => 1 - inputImage.sample(x, y);
+        }
+    }
+
     // preserve aspect ratio no matter the size of the canvas
     const inputImageAspectRatio = inputImage.sourceImageAspectRatio;
     const maxSize = plotter.size;
@@ -55,7 +70,6 @@ function plot(plotter: PlotterBase): void {
     const startX = 0.5 * (maxSize.width - usedSize.width);
     const startY = 0.5 * (maxSize.height - usedSize.height);
 
-    const invertColors = Parameters.invertColors;
     const scalingX = usedSize.width / inputImage.width;
     const scalingY = usedSize.height / inputImage.height;
     const maxFrequency = scalingX * Parameters.maxFrequency;
@@ -68,7 +82,7 @@ function plot(plotter: PlotterBase): void {
         const baselineY = startY + (iY + 0.5) * scalingY;
         let angle = 0;
         for (let iX = 0; iX < inputImage.width - 1; iX += dX) {
-            const darkness = invertColors ? inputImage.sample(iX, iY) : 1 - inputImage.sample(iX, iY);
+            const darkness = computeDarkness(iX, iY);
 
             const frequency = darkness * maxFrequency;
             const amplitude = darkness * maxAmplitude;

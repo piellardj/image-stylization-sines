@@ -28,7 +28,7 @@ const data = {
                 {
                     type: Demopage.supportedControls.FileUpload,
                     id: "input-image-upload-button",
-                    accept: [".png", ".jpg", ".bmp"],
+                    accept: [".png", ".jpg", ".bmp", ".webp"],
                     defaultMessage: "Upload an image"
                 }
             ]
@@ -74,8 +74,14 @@ const data = {
                 },
                 {
                     type: Demopage.supportedControls.Checkbox,
-                    title: "Invert colors",
+                    title: "Invert",
                     id: "invert-colors-checkbox-id",
+                    checked: false
+                },
+                {
+                    type: Demopage.supportedControls.Checkbox,
+                    title: "True intensity",
+                    id: "true-intensity-checkbox-id",
                     checked: false
                 },
                 {
