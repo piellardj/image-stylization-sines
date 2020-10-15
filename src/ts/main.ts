@@ -122,21 +122,26 @@ Parameters.addDownloadObserver(() => {
     const svgString = svgPlotter.export();
 
     const blob = new Blob([svgString], { type: fileType });
-    const objectUrl = URL.createObjectURL(blob);
 
-    const linkElement = document.createElement('a');
-    linkElement.download = fileName;
-    linkElement.href = objectUrl;
-    linkElement.dataset.downloadurl = `${fileType}:${linkElement.download}:${linkElement.href}`;
-    linkElement.style.display = "none";
-    document.body.appendChild(linkElement);
-    linkElement.click();
-    document.body.removeChild(linkElement);
+    if (typeof window.navigator !== "undefined" && typeof window.navigator.msSaveBlob !== "undefined") { // for IE
+        window.navigator.msSaveBlob(blob, fileName);
+    } else {
+        const objectUrl = URL.createObjectURL(blob);
 
-    // don't forget to free the objectURL after a few seconds
-    setTimeout(() => {
-        URL.revokeObjectURL(objectUrl);
-    }, 5000);
+        const linkElement = document.createElement('a');
+        linkElement.download = fileName;
+        linkElement.href = objectUrl;
+        linkElement.dataset.downloadurl = `${fileType}:${linkElement.download}:${linkElement.href}`;
+        linkElement.style.display = "none";
+        document.body.appendChild(linkElement);
+        linkElement.click();
+        document.body.removeChild(linkElement);
+
+        // don't forget to free the objectURL after a few seconds
+        setTimeout(() => {
+            URL.revokeObjectURL(objectUrl);
+        }, 5000);
+    }
 });
 
 function onImageLoad(image: HTMLImageElement): void {
