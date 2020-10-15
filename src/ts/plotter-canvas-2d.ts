@@ -17,8 +17,8 @@ class PlotterCanvas2D extends PlotterBase {
 
     public get size(): ISize {
         return {
-            width: this.canvas.width / this.cssPixel,
-            height: this.canvas.height / this.cssPixel,
+            width: Math.floor(this.canvas.width / this.cssPixel),
+            height: Math.floor(this.canvas.height / this.cssPixel),
         };
     }
 

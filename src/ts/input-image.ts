@@ -56,7 +56,9 @@ class InputImage {
     }
 
     /** Returns a value in [0, 1].
-     * Performs linear interpolation on the x component
+     * Performs linear interpolation on the x component.
+     * @param x can be decimal, interpolation will be performed.
+     * @param y must be an integer
      */
     public sample(x: number, y: number): number {
         const floorX = Math.floor(x);
@@ -71,6 +73,8 @@ class InputImage {
 
     /** Returns a value in [0, 255].
      * No interpolation.
+     * @param x must be an integer
+     * @param y must be an integer
      */
     private getPixel(x: number, y: number): number {
         if (x < 0 || y < 0 || x >= this.width || y >= this.height) {

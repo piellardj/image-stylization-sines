@@ -27,8 +27,8 @@ function computeBiggestFittingRectangle(maxSize: ISize, aspectRatio: number): IS
     }
 
     return {
-        width: usedDisplayWidth,
-        height: usedDisplayHeight
+        width: Math.floor(usedDisplayWidth),
+        height: Math.floor(usedDisplayHeight),
     };
 }
 
