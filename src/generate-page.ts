@@ -4,7 +4,7 @@ import * as path from "path";
 import { Demopage } from "webpage-templates";
 
 const data = {
-    title: "Image transform: sines",
+    title: "Sine waves",
     description: "Transformation of a picture into a series of sine waves.",
     introduction: [
         "This is a simple tool to turn images into a series of sine waves of varying frequency and amplitude.",
