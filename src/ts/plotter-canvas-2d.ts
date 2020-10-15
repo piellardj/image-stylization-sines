@@ -11,7 +11,7 @@ class PlotterCanvas2D extends PlotterBase {
         super();
 
         this.canvas = Page.Canvas.getCanvas();
-        this.context = this.canvas.getContext("2d");
+        this.context = this.canvas.getContext("2d", { alpha: false });
         this.cssPixel = window.devicePixelRatio ?? 1;
     }
 
