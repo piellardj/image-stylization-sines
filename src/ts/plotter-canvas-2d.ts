@@ -7,8 +7,6 @@ class PlotterCanvas2D extends PlotterBase {
     private readonly context: CanvasRenderingContext2D;
     private readonly cssPixel: number;
 
-    private newLine: boolean;
-
     public constructor() {
         super();
 
@@ -36,34 +34,33 @@ class PlotterCanvas2D extends PlotterBase {
     // tslint:disable-next-line:no-empty
     public finalize(): void { }
 
-    public startLine(): void {
-        this.context.beginPath();
-        this.newLine = true;
-    }
-
-    public addPointToLine(rawX: number, rawY: number): void {
-        const x = rawX * this.cssPixel;
-        const y = rawY * this.cssPixel;
-
-        if (this.newLine) {
-            this.context.moveTo(x, y);
-            this.newLine = false;
-        } else {
-            this.context.lineTo(x, y);
-        }
-    }
-
-    public endLine(): void {
-        this.context.stroke();
-        this.context.closePath();
-    }
-
     public set blur(value: number) {
         if (value === 0) {
             this.canvas.style.filter = "";
         } else {
             this.canvas.style.filter = `blur(${value}px)`;
         }
+    }
+
+    protected startLineInternal(): void {
+        this.context.beginPath();
+    }
+
+    protected addFirstPointToLineInternal(rawX: number, rawY: number): void {
+        const x = rawX * this.cssPixel;
+        const y = rawY * this.cssPixel;
+        this.context.moveTo(x, y);
+    }
+
+    protected addPointToLineInternal(rawX: number, rawY: number): void {
+        const x = rawX * this.cssPixel;
+        const y = rawY * this.cssPixel;
+        this.context.lineTo(x, y);
+    }
+
+    protected endLineInternal(): void {
+        this.context.stroke();
+        this.context.closePath();
     }
 
     private resizeCanvas(): void {

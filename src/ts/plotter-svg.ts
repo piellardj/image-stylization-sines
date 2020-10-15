@@ -4,7 +4,6 @@ const WIDTH = 1000;
 const HEIGHT = 1000;
 
 class PlotterSVG extends PlotterBase {
-    private newLine: boolean;
     private stringParts: string[];
     private hasBlur: boolean;
 
@@ -52,24 +51,7 @@ class PlotterSVG extends PlotterBase {
         this.stringParts.push(`</svg>\n`);
     }
 
-    public startLine(): void {
-        this.stringParts.push(`\t\t<path d="`);
-        this.newLine = true;
-    }
-
-    public addPointToLine(rawX: number, rawY: number): void {
-        const x = rawX.toFixed(1);
-        const y = rawY.toFixed(1);
-
-        if (this.newLine) {
-            this.stringParts.push(`M${x},${y}L`);
-            this.newLine = false;
-        } else {
-            this.stringParts.push(` ${x},${y}`);
-        }
-    }
-
-    public endLine(): void {
+    public endLineInternal(): void {
         this.stringParts.push(`"/>\n`);
     }
 
@@ -78,6 +60,22 @@ class PlotterSVG extends PlotterBase {
         const result = this.stringParts.join("");
         console.log(`Concatenation took ${Date.now() - start} ms.`);
         return result;
+    }
+
+    protected startLineInternal(): void {
+        this.stringParts.push(`\t\t<path d="`);
+    }
+
+    protected addFirstPointToLineInternal(rawX: number, rawY: number): void {
+        const x = rawX.toFixed(1);
+        const y = rawY.toFixed(1);
+        this.stringParts.push(`M${x},${y}L`);
+    }
+
+    protected addPointToLineInternal(rawX: number, rawY: number): void {
+        const x = rawX.toFixed(1);
+        const y = rawY.toFixed(1);
+        this.stringParts.push(`${x},${y} `);
     }
 }
 
