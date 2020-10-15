@@ -1,0 +1,84 @@
+import { PlotterBase, IPlotterInfo, ISize } from "./plotter-base";
+
+const WIDTH = 1000;
+const HEIGHT = 1000;
+
+class PlotterSVG extends PlotterBase {
+    private newLine: boolean;
+    private stringParts: string[];
+    private hasBlur: boolean;
+
+    public constructor() {
+        super();
+    }
+
+    public get size(): ISize {
+        return {
+            width: WIDTH,
+            height: HEIGHT,
+        };
+    }
+
+    public initialize(infos: IPlotterInfo): void {
+        this.hasBlur = infos.blur > 0;
+
+        this.stringParts = [];
+
+        this.stringParts.push(`<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n`);
+        this.stringParts.push(`<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 ${WIDTH} ${HEIGHT}">\n`);
+
+        if (this.hasBlur) {
+            const blurEffectId = "gaussianBlur";
+
+            this.stringParts.push(`\t<defs>\n`);
+            this.stringParts.push(`\t\t<filter id="${blurEffectId}" x="0" y="0">\n`);
+            this.stringParts.push(`\t\t\t<feGaussianBlur in="SourceGraphic" stdDeviation="${infos.blur}"/>\n`);
+            this.stringParts.push(`\t\t</filter>\n`);
+            this.stringParts.push(`\t</defs>\n`);
+            this.stringParts.push(`\t<g filter="url(#${blurEffectId})">\n`);
+        }
+
+        this.stringParts.push(`\t<path fill="${infos.backgroundColor}" stroke="none" d="M0,0H${WIDTH}V${HEIGHT}H0Z"/>\n`);
+        this.stringParts.push(`\t<g fill="none" stroke="${infos.lineColor}" stroke-width="${infos.lineWidth}" stroke-linejoin="round">\n`);
+    }
+
+    // tslint:disable-next-line:no-empty
+    public finalize(): void {
+        if (this.hasBlur) {
+            this.stringParts.push(`\t\t</g>\n`);
+        }
+
+        this.stringParts.push(`\t</g>\n`);
+        this.stringParts.push(`</svg>\n`);
+    }
+
+    public startLine(): void {
+        this.stringParts.push(`\t\t<path d="`);
+        this.newLine = true;
+    }
+
+    public addPointToLine(rawX: number, rawY: number): void {
+        const x = rawX.toFixed(1);
+        const y = rawY.toFixed(1);
+
+        if (this.newLine) {
+            this.stringParts.push(`M${x},${y}L`);
+            this.newLine = false;
+        } else {
+            this.stringParts.push(` ${x},${y}`);
+        }
+    }
+
+    public endLine(): void {
+        this.stringParts.push(`"/>\n`);
+    }
+
+    public export(): string {
+        const start = Date.now();
+        const result = this.stringParts.join("");
+        console.log(`Concatenation took ${Date.now() - start} ms.`);
+        return result;
+    }
+}
+
+export { PlotterSVG }

@@ -1,0 +1,30 @@
+{
+  "name": "image-stylization-sines",
+  "homepage": "https://piellardj.github.io/image-stylization-sines",
+  "description": "Tool to stylize images as sine waves.",
+  "main": "build/index.js",
+  "scripts": {
+    "pre-commit": "npm run rebuild && npm run lint",
+    "build-page": "ts-node-script src/generate-page.ts",
+    "build": "npm run build-page && npm run webpack",
+    "clean": "shx rm -rf docs/* **/*generated.*",
+    "lint": "tslint -c src/config/tslint.json -p src/config/tsconfig.json",
+    "rebuild": "npm run clean && npm run build",
+    "webpack": "webpack --config src/config/webpack.config.js"
+  },
+  "author": "Jérémie PIELLARD <jeremie.piellard@gmail.com> (https://github.com/piellardj)",
+  "repository": "github:piellardj/image-stylization-sines",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^14.11.8",
+    "fs-extra": "^9.0.1",
+    "shx": "^0.3.2",
+    "ts-loader": "^8.0.5",
+    "ts-node": "^9.0.0",
+    "tslint": "^6.1.3",
+    "typescript": "^4.0.3",
+    "webpack": "^5.1.0",
+    "webpack-cli": "^4.0.0",
+    "webpage-templates": "github:piellardj/webpage-templates"
+  }
+}
