@@ -34,11 +34,11 @@ const data = {
             ]
         },
         {
-            title: "Processing",
+            title: "Waves",
             controls: [
                 {
                     type: Demopage.supportedControls.Range,
-                    title: "Resolution",
+                    title: "Count",
                     id: "vertical-resolution-range-id",
                     min: 5,
                     max: 100,
@@ -59,18 +59,23 @@ const data = {
                     title: "Frequency",
                     id: "max-frequency-range-id",
                     min: 0.1,
-                    max: 4,
+                    max: 5,
                     value: 2,
                     step: 0.1
-                },
+                }
+            ]
+        },
+        {
+            title: "Display",
+            controls: [
                 {
                     type: Demopage.supportedControls.Range,
                     title: "Line width",
                     id: "line-width-range-id",
                     min: 1,
-                    max: 5,
+                    max: 10,
                     value: 1,
-                    step: 1
+                    step: 0.5
                 },
                 {
                     type: Demopage.supportedControls.Checkbox,

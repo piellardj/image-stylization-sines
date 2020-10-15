@@ -72,7 +72,7 @@ function plot(plotter: PlotterBase): void {
 
     const scalingX = usedSize.width / inputImage.width;
     const scalingY = usedSize.height / inputImage.height;
-    const maxFrequency = scalingX * Parameters.maxFrequency;
+    const maxFrequency = 500 * Parameters.maxFrequency / inputImage.width;
     const maxAmplitude = 0.5 * scalingY * Parameters.maxAmplitude;
 
     const dX = 1 / (2 * maxFrequency);
