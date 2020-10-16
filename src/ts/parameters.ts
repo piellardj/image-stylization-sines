@@ -5,6 +5,7 @@ const controlId = {
     VERTICAL_RESOLUTION: "vertical-resolution-range-id",
     AMPLITUDE: "max-amplitude-range-id",
     FREQUENCY: "max-frequency-range-id",
+    ANGLE: "angle-range-id",
     LINE_WIDTH: "line-width-range-id",
     INVERT_COLORS: "invert-colors-checkbox-id",
     BLUR: "blur-range-id",
@@ -23,6 +24,7 @@ function triggerRedraw(): void {
 Page.Range.addLazyObserver(controlId.VERTICAL_RESOLUTION, triggerRedraw);
 Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
+Page.Range.addLazyObserver(controlId.ANGLE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINE_WIDTH, triggerRedraw);
 Page.Checkbox.addObserver(controlId.INVERT_COLORS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
@@ -56,6 +58,10 @@ abstract class Parameters {
 
     public static get maxFrequency(): number {
         return Page.Range.getValue(controlId.FREQUENCY);
+    }
+
+    public static get angle(): number {
+        return Page.Range.getValue(controlId.ANGLE);
     }
 
     public static get lineWidth(): number {

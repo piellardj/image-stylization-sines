@@ -72,26 +72,34 @@ function plot(plotter: PlotterBase): void {
 
     const scalingX = usedSize.width / inputImage.width;
     const scalingY = usedSize.height / inputImage.height;
-    const maxFrequency = 500 * Parameters.maxFrequency / inputImage.width;
-    const maxAmplitude = 0.5 * scalingY * Parameters.maxAmplitude;
 
-    const dX = 1 / (2 * maxFrequency);
+    const inclinaisonAngle = 2 * Math.PI * Parameters.angle;
+    const cosAngle = Math.cos(inclinaisonAngle);
+    const sinAngle = Math.sin(inclinaisonAngle);
+
+    const maxFrequency = 500 * Parameters.maxFrequency / inputImage.width;
+    const maxAmplitude = 0.5 * scalingY * Parameters.maxAmplitude / cosAngle;
+
+    const stepX = 1 / (2 * maxFrequency);
     for (let iY = 0; iY < inputImage.height; iY++) {
         plotter.startLine();
 
         const baselineY = startY + (iY + 0.5) * scalingY;
-        let angle = 0;
-        for (let iX = 0; iX < inputImage.width - 1; iX += dX) {
+        let phase = 0;
+        for (let iX = 0; iX < inputImage.width - 1; iX += stepX) {
+            const baseX = startX + (iX + 0.5) * scalingX;
+
             const darkness = computeDarkness(iX, iY);
 
             const frequency = darkness * maxFrequency;
             const amplitude = darkness * maxAmplitude;
+            const waveHeight = amplitude * Math.sin(phase);
 
-            const x = startX + (iX + 0.5) * scalingX;
-            const y = baselineY + amplitude * Math.sin(angle);
+            const dY = waveHeight * cosAngle;
+            const dX = -waveHeight * sinAngle;
 
-            plotter.addPointToLine(x, y);
-            angle += frequency * dX;
+            plotter.addPointToLine(baseX + dX, baselineY + dY);
+            phase += frequency * stepX;
         }
 
         plotter.endLine();

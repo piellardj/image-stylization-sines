@@ -63,6 +63,15 @@ const data = {
                     max: 5,
                     value: 2,
                     step: 0.1
+                },
+                {
+                    type: Demopage.supportedControls.Range,
+                    title: "Angle",
+                    id: "angle-range-id",
+                    min: -0.15,
+                    max: 0.15,
+                    value: 0,
+                    step: 0.01
                 }
             ]
         },
