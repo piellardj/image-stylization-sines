@@ -7,7 +7,7 @@ const data = {
     title: "Sine waves",
     description: "Transformation of a picture into a series of sine waves.",
     introduction: [
-        "This is a simple tool to turn images into a series of sine waves of varying frequency and amplitude.",
+        "This is a simple tool that turns images into a series of sine waves of varying frequency and amplitude.",
         "The result can be exported in the SVG format."
     ],
     githubProjectName: "image-stylization-sines",
