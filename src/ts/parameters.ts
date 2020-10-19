@@ -2,7 +2,7 @@ import "./page-interface-generated";
 
 const controlId = {
     UPLOAD_INPUT_IMAGE: "input-image-upload-button",
-    VERTICAL_RESOLUTION: "vertical-resolution-range-id",
+    LINES_COUNT: "lines-count-range-id",
     AMPLITUDE: "max-amplitude-range-id",
     FREQUENCY: "max-frequency-range-id",
     ANGLE: "angle-range-id",
@@ -21,7 +21,7 @@ function triggerRedraw(): void {
     }
 }
 
-Page.Range.addLazyObserver(controlId.VERTICAL_RESOLUTION, triggerRedraw);
+Page.Range.addLazyObserver(controlId.LINES_COUNT, triggerRedraw);
 Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ANGLE, triggerRedraw);
@@ -48,8 +48,8 @@ abstract class Parameters {
         });
     }
 
-    public static get verticalResolution(): number {
-        return Page.Range.getValue(controlId.VERTICAL_RESOLUTION);
+    public static get linesCount(): number {
+        return Page.Range.getValue(controlId.LINES_COUNT);
     }
 
     public static get maxAmplitude(): number {

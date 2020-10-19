@@ -35,17 +35,35 @@ const data = {
             ]
         },
         {
-            title: "Waves",
+            title: "Lines",
             controls: [
+                {
+                    type: Demopage.supportedControls.Tabs,
+                    title: "Pattern",
+                    id: "lines-pattern-tabs-id",
+                    unique: true,
+                    options: [
+                        {
+                            label: "Straight lines",
+                            value: "0",
+                            checked: true,
+                        }
+                    ]
+                },
                 {
                     type: Demopage.supportedControls.Range,
                     title: "Count",
-                    id: "vertical-resolution-range-id",
+                    id: "lines-count-range-id",
                     min: 5,
                     max: 100,
                     value: 50,
                     step: 5
-                },
+                }
+            ]
+        },
+        {
+            title: "Waves",
+            controls: [
                 {
                     type: Demopage.supportedControls.Range,
                     title: "Amplitude",

@@ -81,16 +81,31 @@
           <hr />
 
           <section class="controls-section">
-            <h2>Waves</h2>
+            <h2>Lines</h2>
 
             <div class="controls-list">
-              <div class="control" id="control-vertical-resolution-range-id">
+              <div class="control" id="control-lines-pattern-tabs-id">
+                <label>Pattern:</label>
+                <div class="tabs compact" id="lines-pattern-tabs-id-id">
+                  <input type="radio" name="lines-pattern-tabs-id" value="0" id="lines-pattern-tabs-id-0-id" checked />
+                  <label for="lines-pattern-tabs-id-0-id">Straight lines</label>
+                </div>
+              </div>
+              <div class="control" id="control-lines-count-range-id">
                 <label>Count:</label>
                 <div class="range">
-                  <input type="range" min="5" max="100" value="50" step="5" class="slider" id="vertical-resolution-range-id">
+                  <input type="range" min="5" max="100" value="50" step="5" class="slider" id="lines-count-range-id">
                   <span class="tooltip"></span>
                 </div>
               </div>
+            </div>
+          </section>
+          <hr />
+
+          <section class="controls-section">
+            <h2>Waves</h2>
+
+            <div class="controls-list">
               <div class="control" id="control-max-amplitude-range-id">
                 <label>Amplitude:</label>
                 <div class="range">

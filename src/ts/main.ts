@@ -69,7 +69,7 @@ function plot(plotter: PlotterBase): void {
     const displayInfos = buildPlotterInfos();
     plotter.initialize(displayInfos);
 
-    const pattern: PatternBase = new PatternStraightLines(inputImage.size, plotter.size, Parameters.verticalResolution);
+    const pattern: PatternBase = new PatternStraightLines(inputImage.size, plotter.size, Parameters.linesCount);
     inputImage.resize(pattern.wantedImageSize);
 
     const computeDarkness = chooseBestSamplingFunction();
