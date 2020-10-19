@@ -1,8 +1,15 @@
 import { Parameters } from "./parameters";
 import { InputImage } from "./input-image";
-import { PlotterBase, IPlotterInfo, ISize } from "./plotter/plotter-base";
+
+import { IPoint } from "./interfaces/i-point";
+import { ISize } from "./interfaces/i-size";
+
+import { PlotterBase, IPlotterInfo } from "./plotter/plotter-base";
 import { PlotterCanvas2D } from "./plotter/plotter-canvas-2d";
 import { PlotterSVG } from "./plotter/plotter-svg";
+
+import { PatternBase } from "./pattern/pattern-base";
+import { PatternStraightLines } from "./pattern/pattern-straight-lines";
 
 import "./page-interface-generated";
 
@@ -32,6 +39,23 @@ function computeBiggestFittingRectangle(maxSize: ISize, aspectRatio: number): IS
     };
 }
 
+type SamplingFunction = (coords: IPoint) => number;
+function chooseBestSamplingFunction(): SamplingFunction {
+    if (Parameters.trueIntensity) {
+        if (Parameters.invertColors) {
+            return (coords: IPoint) => Math.sqrt(inputImage.sample(coords.x, coords.y));
+        } else {
+            return (coords: IPoint) => Math.sqrt(1.001 - inputImage.sample(coords.x, coords.y));
+        }
+    } else {
+        if (Parameters.invertColors) {
+            return (coords: IPoint) => inputImage.sample(coords.x, coords.y);
+        } else {
+            return (coords: IPoint) => 1 - inputImage.sample(coords.x, coords.y);
+        }
+    }
+}
+
 let inputImage: InputImage = null;
 
 function plot(plotter: PlotterBase): void {
@@ -45,22 +69,10 @@ function plot(plotter: PlotterBase): void {
     const displayInfos = buildPlotterInfos();
     plotter.initialize(displayInfos);
 
-    inputImage.resize(plotter.size.width, Parameters.verticalResolution);
+    const pattern: PatternBase = new PatternStraightLines(inputImage.size, plotter.size, Parameters.verticalResolution);
+    inputImage.resize(pattern.wantedImageSize);
 
-    let computeDarkness: (x: number, y: number) => number;
-    if (Parameters.trueIntensity) {
-        if (Parameters.invertColors) {
-            computeDarkness = (x: number, y: number) => Math.sqrt(inputImage.sample(x, y));
-        } else {
-            computeDarkness = (x: number, y: number) => Math.sqrt(1.001 - inputImage.sample(x, y));
-        }
-    } else {
-        if (Parameters.invertColors) {
-            computeDarkness = (x: number, y: number) => inputImage.sample(x, y);
-        } else {
-            computeDarkness = (x: number, y: number) => 1 - inputImage.sample(x, y);
-        }
-    }
+    const computeDarkness = chooseBestSamplingFunction();
 
     // preserve aspect ratio no matter the size of the canvas
     const inputImageAspectRatio = inputImage.sourceImageAspectRatio;
@@ -80,27 +92,39 @@ function plot(plotter: PlotterBase): void {
     const maxFrequency = 500 * Parameters.maxFrequency / inputImage.width;
     const maxAmplitude = 0.5 * scalingY * Parameters.maxAmplitude / cosAngle;
 
+    function imageToCanvas(input: IPoint): IPoint {
+        return {
+            x: startX + (input.x + 0.5) * scalingX,
+            y: startY + (input.y + 0.5) * scalingY,
+        };
+    }
+
     const stepX = 1 / (2 * maxFrequency);
-    for (let iY = 0; iY < inputImage.height; iY++) {
+
+    for (let iLine = 0; iLine < pattern.nbLines; iLine++) {
         plotter.startLine();
 
-        const baselineY = startY + (iY + 0.5) * scalingY;
         let phase = 0;
-        for (let iX = 0; iX < inputImage.width - 1; iX += stepX) {
-            const baseX = startX + (iX + 0.5) * scalingX;
 
-            const darkness = computeDarkness(iX, iY);
+        pattern.walkOnLine(iLine, stepX, (point: IPoint, normal: IPoint) => {
+            const darkness = computeDarkness(point);
+
+            const localAmplitude = darkness * maxAmplitude;
+            const waveHeight = localAmplitude * Math.sin(phase);
+
+            const rotatedNormal: IPoint = {
+                x: normal.x * cosAngle - normal.y * sinAngle,
+                y: normal.x * sinAngle + normal.y * cosAngle,
+            };
+            const dX = waveHeight * rotatedNormal.x;
+            const dY = waveHeight * rotatedNormal.y;
+
+            const absolutePoint = imageToCanvas(point);
+            plotter.addPointToLine(absolutePoint.x + dX, absolutePoint.y + dY);
 
             const frequency = darkness * maxFrequency;
-            const amplitude = darkness * maxAmplitude;
-            const waveHeight = amplitude * Math.sin(phase);
-
-            const dY = waveHeight * cosAngle;
-            const dX = -waveHeight * sinAngle;
-
-            plotter.addPointToLine(baseX + dX, baselineY + dY);
             phase += frequency * stepX;
-        }
+        });
 
         plotter.endLine();
     }
@@ -121,8 +145,8 @@ function updateBlur(blur: number): void {
 Parameters.addBlurChangeObserver(updateBlur);
 updateBlur(Parameters.blur);
 
-const svgPlotter = new PlotterSVG();
 Parameters.addDownloadObserver(() => {
+    const svgPlotter = new PlotterSVG();
     plot(svgPlotter);
 
     const fileName = "image-as-sines.svg";

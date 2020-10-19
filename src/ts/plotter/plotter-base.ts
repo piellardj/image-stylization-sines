@@ -1,18 +1,11 @@
+import { IPoint } from "../interfaces/i-point";
+import { ISize } from "../interfaces/i-size";
+
 interface IPlotterInfo {
     backgroundColor: string;
     lineColor: string;
     lineWidth: number;
     blur: number;
-}
-
-interface ISize {
-    width: number;
-    height: number;
-}
-
-interface IPoint {
-    x: number;
-    y: number;
 }
 
 const ANGLE_THRESHOLD = Math.PI * 0.01;

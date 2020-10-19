@@ -1,6 +1,7 @@
+import { ISize } from "./interfaces/i-size";
+
 class InputImage {
-    private _width: number;
-    private _height: number;
+    private _size: ISize;
 
     private readonly hiddenCanvas: HTMLCanvasElement;
     private readonly hiddenContext: CanvasRenderingContext2D;
@@ -11,32 +12,40 @@ class InputImage {
         this.hiddenCanvas = document.createElement("canvas");
         this.hiddenContext = this.hiddenCanvas.getContext("2d");
         this.sourceImage = image;
-        this._width = 0;
-        this._height = 0;
+        this._size = {
+            width: 0,
+            height: 0,
+        };
+
+        this.resize({ width: image.width, height: image.height });
+    }
+
+    public get size(): ISize {
+        return this._size;
     }
 
     public get width(): number {
-        return this._width;
+        return this._size.width;
     }
 
     public get height(): number {
-        return this._height;
+        return this._size.height;
     }
 
     public get sourceImageAspectRatio(): number {
         return this.sourceImage.width / this.sourceImage.height;
     }
 
-    public resize(maxWidth: number, height: number): void {
+    public resize(wantedSize: ISize): void {
         // the canvas handles image downsizing, however upsizing is handled manually in the sample method.
-        const wantedWidth = Math.min(this.sourceImage.width, maxWidth);
-        const wantedHeight = height;
+        const wantedWidth = Math.min(this.sourceImage.width, wantedSize.width);
+        const wantedHeight = wantedSize.height;
 
-        if (this._width !== wantedWidth || this._height !== wantedHeight) {
-            console.log(`Resize image from ${this._width}x${this._height} to ${wantedWidth}x${wantedHeight}.`);
+        if (this.width !== wantedWidth || this.height !== wantedHeight) {
+            console.log(`Resize image from ${this.width}x${this.height} to ${wantedWidth}x${wantedHeight}.`);
 
-            this._width = wantedWidth;
-            this._height = wantedHeight;
+            this._size.width = wantedWidth;
+            this._size.height = wantedHeight;
 
             this.hiddenCanvas.width = this.width;
             this.hiddenCanvas.height = this.height;
@@ -55,26 +64,36 @@ class InputImage {
         }
     }
 
-    /** Returns a value in [0, 1].
-     * Performs linear interpolation on the x component.
-     * @param x can be decimal, interpolation will be performed.
-     * @param y must be an integer
+    /** Returns a value in [0, 1]. Performs linear interpolation.
+     * @param x in pixels, can be decimal.
+     * @param y in pixels, can be decimal.
      */
     public sample(x: number, y: number): number {
         const floorX = Math.floor(x);
-        const fractX = x - floorX;
+        const floorY = Math.floor(y);
 
-        const before = this.getPixel(floorX, y);
-        const after = this.getPixel(floorX + 1, y);
-        const interpolated = before * (1 - fractX) + after * fractX;
+        const topLeft = this.getPixel(floorX, floorY);
+        const topRight = this.getPixel(floorX + 1, floorY);
+        const bottomLeft = this.getPixel(floorX, floorY + 1);
+        const bottomRight = this.getPixel(floorX + 1, floorY + 1);
+
+        const fractX = x - floorX;
+        const top = this.interpolate(topLeft, topRight, fractX);
+        const bottom = this.interpolate(bottomLeft, bottomRight, fractX);
+
+        const fractY = y - floorY;
+        const interpolated = this.interpolate(top, bottom, fractY);
 
         return interpolated / 255;
     }
 
-    /** Returns a value in [0, 255].
-     * No interpolation.
-     * @param x must be an integer
-     * @param y must be an integer
+    private interpolate(a: number, b: number, x: number): number {
+        return a * (1 - x) + b * x;
+    }
+
+    /** Returns a value in [0, 255]. No interpolation.
+     * @param x in pixels, must be an integer
+     * @param y in pixels, must be an integer
      */
     private getPixel(x: number, y: number): number {
         if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
