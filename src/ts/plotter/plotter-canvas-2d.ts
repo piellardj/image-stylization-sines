@@ -1,6 +1,6 @@
 import { PlotterBase, IPlotterInfo, ISize } from "./plotter-base";
 
-import "./page-interface-generated";
+import "../page-interface-generated";
 
 class PlotterCanvas2D extends PlotterBase {
     private readonly canvas: HTMLCanvasElement;

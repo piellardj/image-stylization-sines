@@ -1,8 +1,8 @@
 import { Parameters } from "./parameters";
 import { InputImage } from "./input-image";
-import { PlotterBase, IPlotterInfo, ISize } from "./plotter-base";
-import { PlotterCanvas2D } from "./plotter-canvas-2d";
-import { PlotterSVG } from "./plotter-svg";
+import { PlotterBase, IPlotterInfo, ISize } from "./plotter/plotter-base";
+import { PlotterCanvas2D } from "./plotter/plotter-canvas-2d";
+import { PlotterSVG } from "./plotter/plotter-svg";
 
 import "./page-interface-generated";
 
