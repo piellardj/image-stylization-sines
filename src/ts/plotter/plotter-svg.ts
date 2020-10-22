@@ -37,7 +37,7 @@ class PlotterSVG extends PlotterBase {
             this.stringParts.push(`\t<g filter="url(#${blurEffectId})">\n`);
         }
 
-        this.stringParts.push(`\t<path fill="${infos.backgroundColor}" stroke="none" d="M0,0H${WIDTH}V${HEIGHT}H0Z"/>\n`);
+        this.stringParts.push(`\t<rect fill="${infos.backgroundColor}" stroke="none" x="0" y="0" width="${WIDTH}" height="${HEIGHT}"/>\n`);
         this.stringParts.push(`\t<g fill="none" stroke="${infos.lineColor}" stroke-width="${infos.lineThickness}" stroke-linejoin="round">\n`);
     }
 
