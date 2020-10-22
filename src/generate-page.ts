@@ -38,6 +38,24 @@ const data = {
             title: "Lines",
             controls: [
                 {
+                    type: Demopage.supportedControls.Tabs,
+                    title: "Pattern",
+                    id: "lines-pattern-style-tabs-id",
+                    unique: true,
+                    options: [
+                        {
+                            label: "Straight",
+                            value: "0",
+                            checked: true,
+                        },
+                        {
+                            label: "Spiral",
+                            value: "1",
+                            checked: false,
+                        },
+                    ]
+                },
+                {
                     type: Demopage.supportedControls.Range,
                     title: "Density",
                     id: "lines-count-range-id",

@@ -2,6 +2,7 @@ import "./page-interface-generated";
 
 const controlId = {
     UPLOAD_INPUT_IMAGE: "input-image-upload-button",
+    LINES_PATTERN: "lines-pattern-style-tabs-id",
     LINES_COUNT: "lines-count-range-id",
     ORIENTATION: "orientation-range-id",
     AMPLITUDE: "max-amplitude-range-id",
@@ -15,6 +16,11 @@ const controlId = {
     DOWNLOAD: "result-download-id",
 };
 
+enum ELinesPattern {
+    STRAIGHT = "0",
+    SPIRAL = "1",
+}
+
 type RedrawObserver = () => unknown;
 const redrawObservers: RedrawObserver[] = [];
 function triggerRedraw(): void {
@@ -23,6 +29,7 @@ function triggerRedraw(): void {
     }
 }
 
+Page.Tabs.addObserver(controlId.LINES_PATTERN, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_COUNT, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ORIENTATION, triggerRedraw);
 Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
@@ -50,6 +57,10 @@ abstract class Parameters {
                 reader.readAsDataURL(filesList[0]);
             }
         });
+    }
+
+    public static get linesPattern(): ELinesPattern {
+        return Page.Tabs.getValues(controlId.LINES_PATTERN)[0] as ELinesPattern;
     }
 
     public static get linesCount(): number {
@@ -108,4 +119,4 @@ abstract class Parameters {
     }
 }
 
-export { Parameters }
+export { Parameters, ELinesPattern }

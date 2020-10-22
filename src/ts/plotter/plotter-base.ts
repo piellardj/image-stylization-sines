@@ -16,7 +16,12 @@ abstract class PlotterBase {
     public abstract initialize(infos: IPlotterInfo): void;
     public abstract finalize(): void;
 
+    public get hasStartedALine(): boolean {
+        return this._hasStartedALine;
+    }
+
     public startLine(): void {
+        this._hasStartedALine = true;
         this.startLineInternal();
 
         this.lastDrawnPoint = null;
@@ -50,6 +55,7 @@ abstract class PlotterBase {
         this.potentialNextPoint = null;
 
         this.endLineInternal();
+        this._hasStartedALine = false;
     }
 
     protected abstract startLineInternal(): void;
@@ -68,6 +74,7 @@ abstract class PlotterBase {
 
     private lastDrawnPoint: IPoint;
     private potentialNextPoint: IPoint;
+    private _hasStartedALine: boolean = false;
 }
 
 export { PlotterBase, IPlotterInfo, ISize }

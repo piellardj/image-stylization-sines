@@ -7,9 +7,6 @@ import { PlotterBase } from "./plotter/plotter-base";
 import { PlotterCanvas2D } from "./plotter/plotter-canvas-2d";
 import { PlotterSVG } from "./plotter/plotter-svg";
 
-import { PatternBase } from "./pattern/pattern-base";
-import { PatternStraightLines } from "./pattern/pattern-straight-lines";
-
 import * as Helpers from "./helpers";
 
 import "./page-interface-generated";
@@ -29,30 +26,40 @@ function plot(image: InputImage, plotter: PlotterBase): void {
     const imageFitting = Helpers.fitImageInPlotter(plotterSize, image.sourceImageAspectRatio);
 
     const baseLineSpacing = 1 / Parameters.linesCount;
-    const lineSpacing = baseLineSpacing * imageFitting.zoomFactor;
+    const linesSpacing = baseLineSpacing * imageFitting.zoomFactor;
 
     const baseMaxFrequency = 500 * Parameters.maxFrequency;
     const maxFrequency = baseMaxFrequency / imageFitting.zoomFactor;
 
-    const maxAmplitude = 0.5 * (lineSpacing - displayInfos.lineThickness) * Parameters.maxAmplitude;
+    const maxAmplitude = 0.5 * (linesSpacing - displayInfos.lineThickness) * Parameters.maxAmplitude;
 
-    const pattern: PatternBase = new PatternStraightLines(imageFitting.sizeInPlotter, lineSpacing);
+    const pattern = Helpers.choosePattern(imageFitting.sizeInPlotter, linesSpacing);
+
     image.resize(pattern.suggestedImageSize);
 
     const samplingFunction = Helpers.chooseBestSamplingFunction();
     const normalRotation = Helpers.computeNormalRotationFunction();
     const waveFunction = Helpers.computeWaveFunction();
 
-    const step = Math.min(1, 1 / (2 * maxFrequency));
+    const samplesPerPixel = Math.max(1, 2 * maxFrequency);
+    const step = 1 / samplesPerPixel;
     for (let iLine = 0; iLine < pattern.nbLines; iLine++) {
-        plotter.startLine();
-
         let phase = 0;
         pattern.walkOnLine(iLine, step, (point: IPoint, normal: IPoint) => {
             const normalizedCoords: IPoint = {
                 x: point.x / (imageFitting.sizeInPlotter.width - 1),
                 y: point.y / (imageFitting.sizeInPlotter.height - 1),
             };
+
+            const outOfImage = normalizedCoords.x < 0 || normalizedCoords.x > 1 || normalizedCoords.y < 0 || normalizedCoords.y > 1;
+            if (outOfImage) {
+                if (plotter.hasStartedALine) {
+                    plotter.endLine();
+                }
+                return;
+            } else if (!plotter.hasStartedALine) {
+                plotter.startLine();
+            }
 
             const localDarkness = samplingFunction(inputImage, normalizedCoords);
 
@@ -70,7 +77,9 @@ function plot(image: InputImage, plotter: PlotterBase): void {
             phase += localFrequency * step;
         });
 
-        plotter.endLine();
+        if (plotter.hasStartedALine) {
+            plotter.endLine();
+        }
     }
 
     plotter.finalize();

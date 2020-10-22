@@ -8,6 +8,10 @@ abstract class PatternBase {
     public abstract get suggestedImageSize(): ISize;
     public abstract get nbLines(): number;
 
+    /**
+     * @param lineId integer
+     * @param step in canvas pixels
+     */
     public abstract walkOnLine(lineId: number, step: number, callback: LineWalker): void;
 }
 

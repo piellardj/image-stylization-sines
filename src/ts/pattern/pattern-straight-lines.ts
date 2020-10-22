@@ -70,10 +70,6 @@ class PatternStraightLines extends PatternBase {
         return this._lines.length;
     }
 
-    /**
-     * @param lineId integer
-     * @param step in canvas pixels
-     */
     public walkOnLine(lineId: number, step: number, callback: LineWalker): void {
         const line = this._lines[lineId];
 
