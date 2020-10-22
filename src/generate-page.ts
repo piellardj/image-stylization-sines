@@ -43,7 +43,7 @@ const data = {
                     id: "lines-count-range-id",
                     min: 10,
                     max: 200,
-                    value: 50,
+                    value: 70,
                     step: 10
                 },
                 {
