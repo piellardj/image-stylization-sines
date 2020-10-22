@@ -38,26 +38,22 @@ const data = {
             title: "Lines",
             controls: [
                 {
-                    type: Demopage.supportedControls.Tabs,
-                    title: "Pattern",
-                    id: "lines-pattern-tabs-id",
-                    unique: true,
-                    options: [
-                        {
-                            label: "Straight lines",
-                            value: "0",
-                            checked: true,
-                        }
-                    ]
+                    type: Demopage.supportedControls.Range,
+                    title: "Density",
+                    id: "lines-count-range-id",
+                    min: 10,
+                    max: 200,
+                    value: 50,
+                    step: 10
                 },
                 {
                     type: Demopage.supportedControls.Range,
-                    title: "Count",
-                    id: "lines-count-range-id",
-                    min: 5,
-                    max: 100,
-                    value: 50,
-                    step: 5
+                    title: "Orientation",
+                    id: "orientation-range-id",
+                    min: 0,
+                    max: 90,
+                    value: 0,
+                    step: 1
                 }
             ]
         },
@@ -90,6 +86,15 @@ const data = {
                     max: 0.15,
                     value: 0,
                     step: 0.01
+                },
+                {
+                    type: Demopage.supportedControls.Range,
+                    title: "Squareness",
+                    id: "wave-squareness-range-id",
+                    min: 0,
+                    max: 1,
+                    value: 0,
+                    step: 0.01
                 }
             ]
         },
@@ -98,8 +103,8 @@ const data = {
             controls: [
                 {
                     type: Demopage.supportedControls.Range,
-                    title: "Line width",
-                    id: "line-width-range-id",
+                    title: "Thickness",
+                    id: "line-thickness-range-id",
                     min: 1,
                     max: 10,
                     value: 1,

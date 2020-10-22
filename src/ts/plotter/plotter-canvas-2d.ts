@@ -27,7 +27,7 @@ class PlotterCanvas2D extends PlotterBase {
 
         this.context.fillStyle = infos.backgroundColor;
         this.context.strokeStyle = infos.lineColor;
-        this.context.lineWidth = infos.lineWidth * this.cssPixel;
+        this.context.lineWidth = infos.lineThickness * this.cssPixel;
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 

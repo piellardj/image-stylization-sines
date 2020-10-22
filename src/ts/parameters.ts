@@ -3,10 +3,12 @@ import "./page-interface-generated";
 const controlId = {
     UPLOAD_INPUT_IMAGE: "input-image-upload-button",
     LINES_COUNT: "lines-count-range-id",
+    ORIENTATION: "orientation-range-id",
     AMPLITUDE: "max-amplitude-range-id",
     FREQUENCY: "max-frequency-range-id",
     ANGLE: "angle-range-id",
-    LINE_WIDTH: "line-width-range-id",
+    WAVE_SQUARENESS: "wave-squareness-range-id",
+    LINE_THICKNESS: "line-thickness-range-id",
     INVERT_COLORS: "invert-colors-checkbox-id",
     BLUR: "blur-range-id",
     TRUE_INTENSITY: "true-intensity-checkbox-id",
@@ -22,10 +24,12 @@ function triggerRedraw(): void {
 }
 
 Page.Range.addLazyObserver(controlId.LINES_COUNT, triggerRedraw);
+Page.Range.addLazyObserver(controlId.ORIENTATION, triggerRedraw);
 Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ANGLE, triggerRedraw);
-Page.Range.addLazyObserver(controlId.LINE_WIDTH, triggerRedraw);
+Page.Range.addLazyObserver(controlId.WAVE_SQUARENESS, triggerRedraw);
+Page.Range.addLazyObserver(controlId.LINE_THICKNESS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.INVERT_COLORS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
 Page.Canvas.Observers.canvasResize.push(triggerRedraw);
@@ -52,6 +56,13 @@ abstract class Parameters {
         return Page.Range.getValue(controlId.LINES_COUNT);
     }
 
+    public static get orientationInDegrees(): number {
+        return Page.Range.getValue(controlId.ORIENTATION);
+    }
+    public static get orientationInRadians(): number {
+        return this.orientationInDegrees / 180 * Math.PI;
+    }
+
     public static get maxAmplitude(): number {
         return Page.Range.getValue(controlId.AMPLITUDE);
     }
@@ -64,8 +75,12 @@ abstract class Parameters {
         return Page.Range.getValue(controlId.ANGLE);
     }
 
-    public static get lineWidth(): number {
-        return Page.Range.getValue(controlId.LINE_WIDTH);
+    public static get waveSquareness(): number {
+        return Page.Range.getValue(controlId.WAVE_SQUARENESS);
+    }
+
+    public static get lineThickness(): number {
+        return Page.Range.getValue(controlId.LINE_THICKNESS);
     }
 
     public static get invertColors(): boolean {

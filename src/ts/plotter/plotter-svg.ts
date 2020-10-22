@@ -38,7 +38,7 @@ class PlotterSVG extends PlotterBase {
         }
 
         this.stringParts.push(`\t<path fill="${infos.backgroundColor}" stroke="none" d="M0,0H${WIDTH}V${HEIGHT}H0Z"/>\n`);
-        this.stringParts.push(`\t<g fill="none" stroke="${infos.lineColor}" stroke-width="${infos.lineWidth}" stroke-linejoin="round">\n`);
+        this.stringParts.push(`\t<g fill="none" stroke="${infos.lineColor}" stroke-width="${infos.lineThickness}" stroke-linejoin="round">\n`);
     }
 
     // tslint:disable-next-line:no-empty

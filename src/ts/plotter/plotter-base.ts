@@ -4,7 +4,7 @@ import { ISize } from "../interfaces/i-size";
 interface IPlotterInfo {
     backgroundColor: string;
     lineColor: string;
-    lineWidth: number;
+    lineThickness: number;
     blur: number;
 }
 

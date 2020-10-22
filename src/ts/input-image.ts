@@ -1,4 +1,5 @@
 import { ISize } from "./interfaces/i-size";
+import { IPoint } from "./interfaces/i-point";
 
 class InputImage {
     private _size: ISize;
@@ -39,7 +40,7 @@ class InputImage {
     public resize(wantedSize: ISize): void {
         // the canvas handles image downsizing, however upsizing is handled manually in the sample method.
         const wantedWidth = Math.min(this.sourceImage.width, wantedSize.width);
-        const wantedHeight = wantedSize.height;
+        const wantedHeight = Math.min(this.sourceImage.height, wantedSize.height);
 
         if (this.width !== wantedWidth || this.height !== wantedHeight) {
             console.log(`Resize image from ${this.width}x${this.height} to ${wantedWidth}x${wantedHeight}.`);
@@ -64,25 +65,31 @@ class InputImage {
         }
     }
 
-    /** Returns a value in [0, 1]. Performs linear interpolation.
-     * @param x in pixels, can be decimal.
-     * @param y in pixels, can be decimal.
-     */
-    public sample(x: number, y: number): number {
-        const floorX = Math.floor(x);
-        const floorY = Math.floor(y);
+    /** Returns a value in [0, 1]. Performs linear interpolation. */
+    public sample(normalizedCoords: IPoint): number {
+        const pixelCoords: IPoint = {
+            x: normalizedCoords.x * (this._size.width - 1),
+            y: normalizedCoords.y * (this._size.height - 1),
+        }
 
-        const topLeft = this.getPixel(floorX, floorY);
-        const topRight = this.getPixel(floorX + 1, floorY);
-        const bottomLeft = this.getPixel(floorX, floorY + 1);
-        const bottomRight = this.getPixel(floorX + 1, floorY + 1);
+        const floorPixelCoords: IPoint = {
+            x: Math.floor(pixelCoords.x),
+            y: Math.floor(pixelCoords.y),
+        };
+        const fractPixelCoords: IPoint = {
+            x: pixelCoords.x - floorPixelCoords.x,
+            y: pixelCoords.y - floorPixelCoords.y,
+        };
 
-        const fractX = x - floorX;
-        const top = this.interpolate(topLeft, topRight, fractX);
-        const bottom = this.interpolate(bottomLeft, bottomRight, fractX);
+        const topLeft = this.getPixel(floorPixelCoords.x, floorPixelCoords.y);
+        const topRight = this.getPixel(floorPixelCoords.x + 1, floorPixelCoords.y);
+        const bottomLeft = this.getPixel(floorPixelCoords.x, floorPixelCoords.y + 1);
+        const bottomRight = this.getPixel(floorPixelCoords.x + 1, floorPixelCoords.y + 1);
 
-        const fractY = y - floorY;
-        const interpolated = this.interpolate(top, bottom, fractY);
+        const top = this.interpolate(topLeft, topRight, fractPixelCoords.x);
+        const bottom = this.interpolate(bottomLeft, bottomRight, fractPixelCoords.x);
+
+        const interpolated = this.interpolate(top, bottom, fractPixelCoords.y);
 
         return interpolated / 255;
     }
