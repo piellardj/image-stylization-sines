@@ -6,6 +6,7 @@ import { PatternBase } from "./pattern/pattern-base";
 import { PatternStraightLines } from "./pattern/pattern-straight-lines";
 import { PatternSpiral } from "./pattern/pattern-spiral";
 import { IPlotterInfo } from "./plotter/plotter-base";
+import { PatternPolygon } from "./pattern/pattern-polygon";
 
 function buildPlotterInfos(): IPlotterInfo {
     return {
@@ -99,10 +100,13 @@ function computeWaveFunction(): WaveFunction {
 }
 
 function choosePattern(imageSizeInPlotter: ISize, linesSpacing: number): PatternBase {
-    if (Parameters.linesPattern === ELinesPattern.STRAIGHT) {
+    const chosenPattern = Parameters.linesPattern;
+    if (chosenPattern === ELinesPattern.STRAIGHT) {
         return new PatternStraightLines(imageSizeInPlotter, linesSpacing);
-    } else {
+    } else if (chosenPattern === ELinesPattern.SPIRAL) {
         return new PatternSpiral(imageSizeInPlotter, linesSpacing);
+    } else {
+        return new PatternPolygon(imageSizeInPlotter, linesSpacing);
     }
 }
 

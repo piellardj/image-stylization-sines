@@ -5,6 +5,7 @@ const controlId = {
     LINES_PATTERN: "lines-pattern-style-tabs-id",
     LINES_COUNT: "lines-count-range-id",
     ORIENTATION: "orientation-range-id",
+    LINES_SIDES: "lines-sides-range-id",
     AMPLITUDE: "max-amplitude-range-id",
     FREQUENCY: "max-frequency-range-id",
     ANGLE: "angle-range-id",
@@ -19,6 +20,7 @@ const controlId = {
 enum ELinesPattern {
     STRAIGHT = "0",
     SPIRAL = "1",
+    POLYGON = "2",
 }
 
 type RedrawObserver = () => unknown;
@@ -32,6 +34,7 @@ function triggerRedraw(): void {
 Page.Tabs.addObserver(controlId.LINES_PATTERN, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_COUNT, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ORIENTATION, triggerRedraw);
+Page.Range.addLazyObserver(controlId.LINES_SIDES, triggerRedraw);
 Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ANGLE, triggerRedraw);
@@ -40,6 +43,13 @@ Page.Range.addLazyObserver(controlId.LINE_THICKNESS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.INVERT_COLORS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
 Page.Canvas.Observers.canvasResize.push(triggerRedraw);
+
+function udpateLinesSidesVisibility(): void {
+    const pattern = Page.Tabs.getValues(controlId.LINES_PATTERN)[0] as ELinesPattern;
+    Page.Controls.setVisibility(controlId.LINES_SIDES, pattern === ELinesPattern.POLYGON);
+}
+Page.Tabs.addObserver(controlId.LINES_PATTERN, udpateLinesSidesVisibility);
+udpateLinesSidesVisibility();
 
 abstract class Parameters {
     public static addFileUploadObserver(callback: (image: HTMLImageElement) => unknown): void {
@@ -72,6 +82,10 @@ abstract class Parameters {
     }
     public static get orientationInRadians(): number {
         return this.orientationInDegrees / 180 * Math.PI;
+    }
+
+    public static get linesSides(): number {
+        return Page.Range.getValue(controlId.LINES_SIDES);
     }
 
     public static get maxAmplitude(): number {

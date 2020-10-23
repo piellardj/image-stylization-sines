@@ -53,6 +53,11 @@ const data = {
                             value: "1",
                             checked: false,
                         },
+                        {
+                            label: "Polygon",
+                            value: "2",
+                            checked: false,
+                        },
                     ]
                 },
                 {
@@ -71,6 +76,15 @@ const data = {
                     min: 0,
                     max: 90,
                     value: 0,
+                    step: 1
+                },
+                {
+                    type: Demopage.supportedControls.Range,
+                    title: "Sides",
+                    id: "lines-sides-range-id",
+                    min: 3,
+                    max: 15,
+                    value: 5,
                     step: 1
                 }
             ]

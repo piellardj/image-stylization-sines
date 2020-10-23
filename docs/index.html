@@ -91,6 +91,8 @@
                   <label for="lines-pattern-style-tabs-id-0-id">Straight</label>
                   <input type="radio" name="lines-pattern-style-tabs-id" value="1" id="lines-pattern-style-tabs-id-1-id" />
                   <label for="lines-pattern-style-tabs-id-1-id">Spiral</label>
+                  <input type="radio" name="lines-pattern-style-tabs-id" value="2" id="lines-pattern-style-tabs-id-2-id" />
+                  <label for="lines-pattern-style-tabs-id-2-id">Polygon</label>
                 </div>
               </div>
               <div class="control" id="control-lines-count-range-id">
@@ -104,6 +106,13 @@
                 <label>Orientation:</label>
                 <div class="range">
                   <input type="range" min="0" max="90" value="0" step="1" class="slider" id="orientation-range-id">
+                  <span class="tooltip"></span>
+                </div>
+              </div>
+              <div class="control" id="control-lines-sides-range-id">
+                <label>Sides:</label>
+                <div class="range">
+                  <input type="range" min="3" max="15" value="5" step="1" class="slider" id="lines-sides-range-id">
                   <span class="tooltip"></span>
                 </div>
               </div>
