@@ -61,7 +61,7 @@ function plot(image: InputImage, plotter: PlotterBase): void {
                 plotter.startLine();
             }
 
-            const localDarkness = samplingFunction(inputImage, normalizedCoords);
+            const localDarkness = samplingFunction(image, normalizedCoords);
 
             const localAmplitude = localDarkness * maxAmplitude;
             const localHeight = waveFunction(phase, localAmplitude);
