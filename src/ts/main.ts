@@ -12,7 +12,7 @@ import * as Helpers from "./helpers";
 import "./page-interface-generated";
 
 function plot(image: InputImage, plotter: PlotterBase): void {
-    const start = Date.now();
+    const start = performance.now();
 
     if (image == null) {
         console.log("Image not loaded!");
@@ -83,7 +83,7 @@ function plot(image: InputImage, plotter: PlotterBase): void {
     }
 
     plotter.finalize();
-    console.log(`Plotting took ${Date.now() - start} ms.`);
+    console.log(`Plotting took ${performance.now() - start} ms.`);
 }
 
 let inputImage: InputImage = null;
