@@ -166,6 +166,12 @@ const data = {
                 },
                 {
                     type: Demopage.supportedControls.Checkbox,
+                    title: "Round linecap",
+                    id: "round-linecap-checkbox-id",
+                    checked: true
+                },
+                {
+                    type: Demopage.supportedControls.Checkbox,
                     title: "Invert",
                     id: "invert-colors-checkbox-id",
                     checked: false

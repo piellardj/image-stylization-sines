@@ -1,3 +1,4 @@
+import { Parameters } from "../parameters";
 import { PlotterBase, IPlotterInfo, ISize } from "./plotter-base";
 
 const WIDTH = 1000;
@@ -38,7 +39,8 @@ class PlotterSVG extends PlotterBase {
         }
 
         this.stringParts.push(`\t<rect fill="${infos.backgroundColor}" stroke="none" x="0" y="0" width="${WIDTH}" height="${HEIGHT}"/>\n`);
-        this.stringParts.push(`\t<g fill="none" stroke="${infos.lineColor}" stroke-width="${infos.lineThickness}" stroke-linejoin="round">\n`);
+        const linecap = Parameters.roundLinecap ? ` stroke-linecap="round"` : ``;
+        this.stringParts.push(`\t<g fill="none" stroke="${infos.lineColor}" stroke-width="${infos.lineThickness}" stroke-linejoin="round"${linecap}>\n`);
     }
 
     // tslint:disable-next-line:no-empty
