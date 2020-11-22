@@ -2,7 +2,7 @@ import { InputImage } from "../input-image";
 import { IPoint } from "../interfaces/i-point";
 import { LinesBase } from "../lines/lines-base";
 import { Parameters } from "../parameters";
-import { PlotterBase, IImageFitting } from "../plotter/plotter-base";
+import { PlotterBase, IImageFitting, IPlotterInfo } from "../plotter/plotter-base";
 import { PatternBase } from "./pattern-base";
 
 type SamplingFunction = (inputImage: InputImage, coords: IPoint) => number;
@@ -20,6 +20,8 @@ class PatternDithering extends PatternBase {
     private readonly samplingFunction: SamplingFunction;
 
     private readonly imageFitting: IImageFitting;
+
+    private readonly linesThickness: number;
 
     private readonly step: number;
 
@@ -43,12 +45,14 @@ class PatternDithering extends PatternBase {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
-    public constructor(imageFitting: IImageFitting) {
+    public constructor(imageFitting: IImageFitting, linesSpacing: number) {
         super();
 
         this.samplingFunction = PatternDithering.chooseBestSamplingFunction();
 
         this.imageFitting = imageFitting;
+
+        this.linesThickness = Math.max(1, Parameters.maxAmplitude * linesSpacing);
 
         const MIN_FREQUENCY = 10;
         const MAX_FREQUENCY = 500;
@@ -56,6 +60,15 @@ class PatternDithering extends PatternBase {
         const baseMaxFrequency = MIN_FREQUENCY * (1 - xFrequency) + MAX_FREQUENCY * xFrequency;
         const frequency = baseMaxFrequency / imageFitting.zoomFactor;
         this.step = 1 / frequency;
+    }
+
+    public buildPlotterInfos(): IPlotterInfo {
+        return {
+            backgroundColor: Parameters.invertColors ? "black" : "white",
+            lineColor: Parameters.invertColors ? "white" : "black",
+            lineThickness: this.linesThickness,
+            blur: Parameters.blur,
+        };
     }
 
     public drawLine(lines: LinesBase, lineId: number, image: InputImage, plotter: PlotterBase): void {

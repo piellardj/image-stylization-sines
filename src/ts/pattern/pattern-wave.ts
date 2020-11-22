@@ -2,7 +2,7 @@ import { InputImage } from "../input-image";
 import { IPoint } from "../interfaces/i-point";
 import { LinesBase } from "../lines/lines-base";
 import { Parameters } from "../parameters";
-import { PlotterBase, IImageFitting } from "../plotter/plotter-base";
+import { PlotterBase, IImageFitting, IPlotterInfo } from "../plotter/plotter-base";
 import { PatternBase } from "./pattern-base";
 
 type WaveFunction = (phase: number, amplitude: number) => number;
@@ -36,6 +36,15 @@ class PatternWave extends PatternBase {
 
         const samplesPerPixel = Math.max(1, 2 * this.maxFrequency);
         this.step = 1 / samplesPerPixel;
+    }
+
+    public buildPlotterInfos(): IPlotterInfo {
+        return {
+            backgroundColor: Parameters.invertColors ? "black" : "white",
+            lineColor: Parameters.invertColors ? "white" : "black",
+            lineThickness: Parameters.lineThickness,
+            blur: Parameters.blur,
+        };
     }
 
     public drawLine(lines: LinesBase, lineId: number, image: InputImage, plotter: PlotterBase): void {

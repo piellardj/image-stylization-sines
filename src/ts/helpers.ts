@@ -4,20 +4,12 @@ import { LinesBase } from "./lines/lines-base";
 import { LinesStraightLines } from "./lines/lines-straight-lines";
 import { LinesSines } from "./lines/lines-sines";
 import { LinesSpiral } from "./lines/lines-spiral";
-import { IPlotterInfo, IImageFitting } from "./plotter/plotter-base";
+import { IImageFitting } from "./plotter/plotter-base";
 import { LinesPolygon } from "./lines/lines-polygon";
 import { PatternWave } from "./pattern/pattern-wave";
 import { PatternBase } from "./pattern/pattern-base";
 import { PatternDithering } from "./pattern/pattern-dithering";
 
-function buildPlotterInfos(): IPlotterInfo {
-    return {
-        backgroundColor: Parameters.invertColors ? "black" : "white",
-        lineColor: Parameters.invertColors ? "white" : "black",
-        lineThickness: Parameters.lineThickness,
-        blur: Parameters.blur,
-    };
-}
 
 function chooseLines(imageSizeInPlotter: ISize, linesSpacing: number): LinesBase {
     const chosenType = Parameters.linesType;
@@ -37,7 +29,7 @@ function choosePattern(imageFitting: IImageFitting, linesSpacing: number): Patte
     if (pattern === EPattern.WAVES) {
         return new PatternWave(imageFitting, linesSpacing);
     } else {
-        return new PatternDithering(imageFitting);
+        return new PatternDithering(imageFitting, linesSpacing);
     }
 }
 
@@ -68,7 +60,6 @@ function downloadTextFile(content: string, filename: string): void {
 }
 
 export {
-    buildPlotterInfos,
     chooseLines,
     choosePattern,
     downloadTextFile,

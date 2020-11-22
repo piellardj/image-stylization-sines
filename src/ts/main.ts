@@ -29,7 +29,7 @@ function plot(image: InputImage, plotter: PlotterBase): void {
 
     image.resize(lines.suggestedImageSize);
 
-    const displayInfos = Helpers.buildPlotterInfos();
+    const displayInfos = pattern.buildPlotterInfos();
     plotter.initialize(displayInfos);
 
     for (let iLine = 0; iLine < lines.nbLines; iLine++) {

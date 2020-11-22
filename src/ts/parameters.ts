@@ -165,6 +165,7 @@ function udpateControlsVisibility(): void {
     const pattern = Parameters.pattern;
     Page.Controls.setVisibility(controlId.ANGLE, pattern === EPattern.WAVES);
     Page.Controls.setVisibility(controlId.WAVE_SQUARENESS, pattern === EPattern.WAVES);
+    Page.Controls.setVisibility(controlId.LINE_THICKNESS, pattern === EPattern.WAVES);
 }
 Page.Tabs.addObserver(controlId.LINES_TYPE, udpateControlsVisibility);
 Page.Tabs.addObserver(controlId.PATTERN, udpateControlsVisibility);
