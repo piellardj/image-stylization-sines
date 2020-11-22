@@ -12,13 +12,6 @@ class PlotterSVG extends PlotterBase {
         super();
     }
 
-    public get size(): ISize {
-        return {
-            width: WIDTH,
-            height: HEIGHT,
-        };
-    }
-
     public initialize(infos: IPlotterInfo): void {
         this.hasBlur = infos.blur > 0;
 
@@ -62,6 +55,13 @@ class PlotterSVG extends PlotterBase {
         const result = this.stringParts.join("");
         console.log(`Concatenation took ${Date.now() - start} ms.`);
         return result;
+    }
+
+    protected get size(): ISize {
+        return {
+            width: WIDTH,
+            height: HEIGHT,
+        };
     }
 
     protected startLineInternal(): void {

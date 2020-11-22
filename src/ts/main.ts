@@ -22,8 +22,7 @@ function plot(image: InputImage, plotter: PlotterBase): void {
     const displayInfos = Helpers.buildPlotterInfos();
     plotter.initialize(displayInfos);
 
-    const plotterSize = plotter.size;
-    const imageFitting = Helpers.fitImageInPlotter(plotterSize, image.sourceImageAspectRatio);
+    const imageFitting = plotter.fitImage(image.sourceImageAspectRatio);
 
     const baseLineSpacing = 1 / Parameters.linesCount;
     const linesSpacing = baseLineSpacing * imageFitting.zoomFactor;

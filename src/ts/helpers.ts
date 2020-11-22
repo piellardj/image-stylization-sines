@@ -18,44 +18,6 @@ function buildPlotterInfos(): IPlotterInfo {
     };
 }
 
-interface IImageFitting {
-    sizeInPlotter: ISize,
-    relativeToAbsolute: (relativeCoords: IPoint) => IPoint;
-    zoomFactor: number,
-};
-
-function fitImageInPlotter(maxSize: ISize, aspectRatio: number): IImageFitting {
-    const displayAspectRatio = maxSize.width / maxSize.height;
-
-    const sizeInPlotter: ISize = {
-        width: maxSize.width,
-        height: maxSize.height,
-    };
-    if (aspectRatio > displayAspectRatio) {
-        sizeInPlotter.height = Math.floor(sizeInPlotter.height * displayAspectRatio / aspectRatio);
-    } else if (aspectRatio < displayAspectRatio) {
-        sizeInPlotter.width = Math.floor(sizeInPlotter.width * aspectRatio / displayAspectRatio);
-    }
-
-    const offSetX = 0.5 * (maxSize.width - sizeInPlotter.width);
-    const offSetY = 0.5 * (maxSize.height - sizeInPlotter.height);
-    const relativeToAbsolute = (relativeCoords: IPoint): IPoint => {
-        return {
-            x: relativeCoords.x + offSetX,
-            y: relativeCoords.y + offSetY,
-        };
-    };
-
-    const minSide = Math.min(sizeInPlotter.width, sizeInPlotter.height);
-    const baseMinSide = Math.min(aspectRatio, 1 / aspectRatio);
-
-    return {
-        sizeInPlotter,
-        relativeToAbsolute,
-        zoomFactor: minSide / baseMinSide,
-    };
-}
-
 type SamplingFunction = (inputImage: InputImage, coords: IPoint) => number;
 function chooseBestSamplingFunction(): SamplingFunction {
     if (Parameters.trueIntensity) {
@@ -146,5 +108,4 @@ export {
     computeNormalRotationFunction,
     computeWaveFunction,
     downloadTextFile,
-    fitImageInPlotter,
 };

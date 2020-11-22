@@ -16,13 +16,6 @@ class PlotterCanvas2D extends PlotterBase {
         this.cssPixel = window.devicePixelRatio ?? 1;
     }
 
-    public get size(): ISize {
-        return {
-            width: Math.floor(this.canvas.width / this.cssPixel),
-            height: Math.floor(this.canvas.height / this.cssPixel),
-        };
-    }
-
     public initialize(infos: IPlotterInfo): void {
         this.resizeCanvas();
 
@@ -43,6 +36,13 @@ class PlotterCanvas2D extends PlotterBase {
         } else {
             this.canvas.style.filter = `blur(${value}px)`;
         }
+    }
+
+    protected get size(): ISize {
+        return {
+            width: Math.floor(this.canvas.width / this.cssPixel),
+            height: Math.floor(this.canvas.height / this.cssPixel),
+        };
     }
 
     protected startLineInternal(): void {

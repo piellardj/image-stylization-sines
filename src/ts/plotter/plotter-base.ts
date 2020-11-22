@@ -8,11 +8,15 @@ interface IPlotterInfo {
     blur: number;
 }
 
+interface IImageFitting {
+    sizeInPlotter: ISize,
+    relativeToAbsolute: (relativeCoords: IPoint) => IPoint;
+    zoomFactor: number,
+};
+
 const ANGLE_THRESHOLD = Math.PI * 0.01;
 
 abstract class PlotterBase {
-    public abstract get size(): ISize;
-
     public abstract initialize(infos: IPlotterInfo): void;
     public abstract finalize(): void;
 
@@ -58,6 +62,40 @@ abstract class PlotterBase {
         this._hasStartedALine = false;
     }
 
+    public fitImage(imageAspectRatio: number): IImageFitting {
+        const plotterSize = this.size;
+        const displayAspectRatio = plotterSize.width / plotterSize.height;
+
+        const sizeInPlotter: ISize = {
+            width: plotterSize.width,
+            height: plotterSize.height,
+        };
+        if (imageAspectRatio > displayAspectRatio) {
+            sizeInPlotter.height = Math.floor(sizeInPlotter.height * displayAspectRatio / imageAspectRatio);
+        } else if (imageAspectRatio < displayAspectRatio) {
+            sizeInPlotter.width = Math.floor(sizeInPlotter.width * imageAspectRatio / displayAspectRatio);
+        }
+
+        const offSetX = 0.5 * (plotterSize.width - sizeInPlotter.width);
+        const offSetY = 0.5 * (plotterSize.height - sizeInPlotter.height);
+        const relativeToAbsolute = (relativeCoords: IPoint): IPoint => {
+            return {
+                x: relativeCoords.x + offSetX,
+                y: relativeCoords.y + offSetY,
+            };
+        };
+
+        const minSide = Math.min(sizeInPlotter.width, sizeInPlotter.height);
+        const baseMinSide = Math.min(imageAspectRatio, 1 / imageAspectRatio);
+
+        return {
+            sizeInPlotter,
+            relativeToAbsolute,
+            zoomFactor: minSide / baseMinSide,
+        };
+    }
+
+    protected abstract get size(): ISize;
     protected abstract startLineInternal(): void;
     protected abstract addFirstPointToLineInternal(x: number, y: number): void;
     protected abstract addPointToLineInternal(x: number, y: number): void;
