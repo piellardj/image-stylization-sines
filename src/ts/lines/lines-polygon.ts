@@ -43,6 +43,10 @@ class LinesPolygon extends LinesBase {
         const dSideLength = 2 * this._linesSpacing / Math.tan(insideAngle / 2) / this._nbSides;
         const startSideLength = 0.5 * dSideLength;
 
+        const orientationAngle = Parameters.orientationInRadians;
+        const cosOrientation = Math.cos(orientationAngle);
+        const sinOrientation = Math.sin(orientationAngle);
+
         let startPoint: IPoint = {
             x: this._center.x,
             y: this._center.y,
@@ -56,18 +60,20 @@ class LinesPolygon extends LinesBase {
                 y: startPoint.y + sideLength * Math.sin(tangentAngle),
             };
 
-            const normal: IPoint = {
-                x: Math.cos(tangentAngle + Math.PI / 2),
-                y: Math.sin(tangentAngle + Math.PI / 2),
-            };
+            const normalAngle = tangentAngle + orientationAngle + Math.PI / 2;
+            const normal: IPoint = { x: Math.cos(normalAngle), y: Math.sin(normalAngle) };
 
             const segmentLength = distance(startPoint, endPoint);
             for (let iSubstep = 0; iSubstep * step < segmentLength; iSubstep++) {
                 const currentLength = iSubstep * step;
                 const progression = currentLength / segmentLength;
+
+                const rawPointX = startPoint.x * (1 - progression) + endPoint.x * progression - this._center.x;
+                const rawPointY = startPoint.y * (1 - progression) + endPoint.y * progression - this._center.y;
+
                 const point: IPoint = {
-                    x: startPoint.x * (1 - progression) + endPoint.x * progression,
-                    y: startPoint.y * (1 - progression) + endPoint.y * progression,
+                    x: cosOrientation * rawPointX - sinOrientation * rawPointY + this._center.x,
+                    y: sinOrientation * rawPointX + cosOrientation * rawPointY + this._center.y,
                 };
                 callback(point, normal);
             }
