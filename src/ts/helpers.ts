@@ -1,5 +1,5 @@
 import { ISize } from "./interfaces/i-size";
-import { Parameters, ELinesType } from "./parameters";
+import { Parameters, ELinesType, EPattern } from "./parameters";
 import { LinesBase } from "./lines/lines-base";
 import { LinesStraightLines } from "./lines/lines-straight-lines";
 import { LinesSines } from "./lines/lines-sines";
@@ -8,6 +8,7 @@ import { IPlotterInfo, IImageFitting } from "./plotter/plotter-base";
 import { LinesPolygon } from "./lines/lines-polygon";
 import { PatternWave } from "./pattern/pattern-wave";
 import { PatternBase } from "./pattern/pattern-base";
+import { PatternDithering } from "./pattern/pattern-dithering";
 
 function buildPlotterInfos(): IPlotterInfo {
     return {
@@ -32,7 +33,12 @@ function chooseLines(imageSizeInPlotter: ISize, linesSpacing: number): LinesBase
 }
 
 function choosePattern(imageFitting: IImageFitting, linesSpacing: number): PatternBase {
-    return new PatternWave(imageFitting, linesSpacing);
+    const pattern = Parameters.pattern;
+    if (pattern === EPattern.WAVES) {
+        return new PatternWave(imageFitting, linesSpacing);
+    } else {
+        return new PatternDithering(imageFitting);
+    }
 }
 
 function downloadTextFile(content: string, filename: string): void {

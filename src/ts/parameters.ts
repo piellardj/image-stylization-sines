@@ -8,6 +8,7 @@ const controlId = {
     LINES_SIDES: "lines-sides-range-id",
     LINES_AMPLITUDE: "lines-amplitude-range-id",
     LINES_FREQUENCY: "lines-frequency-range-id",
+    PATTERN: "pattern-tabs-id",
     AMPLITUDE: "max-amplitude-range-id",
     FREQUENCY: "max-frequency-range-id",
     ANGLE: "angle-range-id",
@@ -27,6 +28,11 @@ enum ELinesType {
     SINES = "3",
 }
 
+enum EPattern {
+    WAVES = "0",
+    DITHERING = "1",
+}
+
 type RedrawObserver = () => unknown;
 const redrawObservers: RedrawObserver[] = [];
 function triggerRedraw(): void {
@@ -41,6 +47,7 @@ Page.Range.addLazyObserver(controlId.ORIENTATION, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_SIDES, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_FREQUENCY, triggerRedraw);
+Page.Tabs.addObserver(controlId.PATTERN, triggerRedraw);
 Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ANGLE, triggerRedraw);
@@ -50,15 +57,6 @@ Page.Checkbox.addObserver(controlId.ROUND_LINECAP, triggerRedraw);
 Page.Checkbox.addObserver(controlId.INVERT_COLORS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
 Page.Canvas.Observers.canvasResize.push(triggerRedraw);
-
-function udpateLinesControlsVisibility(): void {
-    const type = Page.Tabs.getValues(controlId.LINES_TYPE)[0] as ELinesType;
-    Page.Controls.setVisibility(controlId.LINES_SIDES, type === ELinesType.POLYGON);
-    Page.Controls.setVisibility(controlId.LINES_AMPLITUDE, type === ELinesType.SINES);
-    Page.Controls.setVisibility(controlId.LINES_FREQUENCY, type === ELinesType.SINES);
-}
-Page.Tabs.addObserver(controlId.LINES_TYPE, udpateLinesControlsVisibility);
-udpateLinesControlsVisibility();
 
 abstract class Parameters {
     public static addFileUploadObserver(callback: (image: HTMLImageElement) => unknown): void {
@@ -103,6 +101,10 @@ abstract class Parameters {
 
     public static get linesFrequency(): number {
         return Page.Range.getValue(controlId.LINES_FREQUENCY);
+    }
+
+    public static get pattern(): EPattern {
+        return Page.Tabs.getValues(controlId.PATTERN)[0] as EPattern;
     }
 
     public static get maxAmplitude(): number {
@@ -154,4 +156,18 @@ abstract class Parameters {
     }
 }
 
-export { Parameters, ELinesType }
+function udpateControlsVisibility(): void {
+    const type = Parameters.linesType;
+    Page.Controls.setVisibility(controlId.LINES_SIDES, type === ELinesType.POLYGON);
+    Page.Controls.setVisibility(controlId.LINES_AMPLITUDE, type === ELinesType.SINES);
+    Page.Controls.setVisibility(controlId.LINES_FREQUENCY, type === ELinesType.SINES);
+
+    const pattern = Parameters.pattern;
+    Page.Controls.setVisibility(controlId.ANGLE, pattern === EPattern.WAVES);
+    Page.Controls.setVisibility(controlId.WAVE_SQUARENESS, pattern === EPattern.WAVES);
+}
+Page.Tabs.addObserver(controlId.LINES_TYPE, udpateControlsVisibility);
+Page.Tabs.addObserver(controlId.PATTERN, udpateControlsVisibility);
+udpateControlsVisibility();
+
+export { Parameters, ELinesType, EPattern }

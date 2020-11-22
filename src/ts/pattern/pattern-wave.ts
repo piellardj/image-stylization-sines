@@ -29,7 +29,7 @@ class PatternWave extends PatternBase {
 
         this.imageFitting = imageFitting;
 
-        const baseMaxFrequency = 500 * Parameters.maxFrequency;
+        const baseMaxFrequency = 2500 * Parameters.maxFrequency;
         this.maxFrequency = baseMaxFrequency / imageFitting.zoomFactor;
 
         this.maxAmplitude = 0.5 * (linesSpacing - Parameters.lineThickness) * Parameters.maxAmplitude;

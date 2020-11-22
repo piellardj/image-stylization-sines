@@ -112,8 +112,25 @@ const data = {
             ]
         },
         {
-            title: "Waves",
+            title: "Pattern",
             controls: [
+                {
+                    type: Demopage.supportedControls.Tabs,
+                    title: "Pattern",
+                    id: "pattern-tabs-id",
+                    unique: true,
+                    options: [
+                        {
+                            label: "Waves",
+                            value: "0",
+                            checked: true,
+                        },
+                        {
+                            label: "Dithering",
+                            value: "1",
+                        },
+                    ]
+                },
                 {
                     type: Demopage.supportedControls.Range,
                     title: "Amplitude",
@@ -127,10 +144,10 @@ const data = {
                     type: Demopage.supportedControls.Range,
                     title: "Frequency",
                     id: "max-frequency-range-id",
-                    min: 0.1,
-                    max: 5,
-                    value: 2,
-                    step: 0.1
+                    min: 0.01,
+                    max: 1,
+                    value: 0.4,
+                    step: 0.01
                 },
                 {
                     type: Demopage.supportedControls.Range,

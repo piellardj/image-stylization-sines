@@ -136,9 +136,18 @@
           <hr />
 
           <section class="controls-section">
-            <h2>Waves</h2>
+            <h2>Pattern</h2>
 
             <div class="controls-list">
+              <div class="control" id="control-pattern-tabs-id">
+                <label>Pattern:</label>
+                <div class="tabs compact" id="pattern-tabs-id-id">
+                  <input type="radio" name="pattern-tabs-id" value="0" id="pattern-tabs-id-0-id" checked />
+                  <label for="pattern-tabs-id-0-id">Waves</label>
+                  <input type="radio" name="pattern-tabs-id" value="1" id="pattern-tabs-id-1-id" />
+                  <label for="pattern-tabs-id-1-id">Dithering</label>
+                </div>
+              </div>
               <div class="control" id="control-max-amplitude-range-id">
                 <label>Amplitude:</label>
                 <div class="range">
@@ -149,7 +158,7 @@
               <div class="control" id="control-max-frequency-range-id">
                 <label>Frequency:</label>
                 <div class="range">
-                  <input type="range" min="0.1" max="5" value="2" step="0.1" class="slider" id="max-frequency-range-id">
+                  <input type="range" min="0.01" max="1" value="0.4" step="0.01" class="slider" id="max-frequency-range-id">
                   <span class="tooltip"></span>
                 </div>
               </div>

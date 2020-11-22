@@ -66,7 +66,7 @@ class PlotterCanvas2D extends PlotterBase {
         this.context.closePath();
     }
 
-    private resizeCanvas(): void {
+    public resizeCanvas(): void {
         const actualWidth = Math.floor(this.cssPixel * this.canvas.clientWidth);
         const actualHeight = Math.floor(this.cssPixel * this.canvas.clientHeight);
 
