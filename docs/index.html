@@ -85,14 +85,15 @@
 
             <div class="controls-list">
               <div class="control" id="control-lines-pattern-style-tabs-id">
-                <label>Pattern:</label>
-                <div class="tabs compact" id="lines-pattern-style-tabs-id-id">
+                <div class="tabs " id="lines-pattern-style-tabs-id-id">
                   <input type="radio" name="lines-pattern-style-tabs-id" value="0" id="lines-pattern-style-tabs-id-0-id" checked />
                   <label for="lines-pattern-style-tabs-id-0-id">Straight</label>
                   <input type="radio" name="lines-pattern-style-tabs-id" value="1" id="lines-pattern-style-tabs-id-1-id" />
                   <label for="lines-pattern-style-tabs-id-1-id">Spiral</label>
                   <input type="radio" name="lines-pattern-style-tabs-id" value="2" id="lines-pattern-style-tabs-id-2-id" />
                   <label for="lines-pattern-style-tabs-id-2-id">Polygon</label>
+                  <input type="radio" name="lines-pattern-style-tabs-id" value="3" id="lines-pattern-style-tabs-id-3-id" />
+                  <label for="lines-pattern-style-tabs-id-3-id">Sines</label>
                 </div>
               </div>
               <div class="control" id="control-lines-count-range-id">
@@ -113,6 +114,20 @@
                 <label>Sides:</label>
                 <div class="range">
                   <input type="range" min="3" max="15" value="5" step="1" class="slider" id="lines-sides-range-id">
+                  <span class="tooltip"></span>
+                </div>
+              </div>
+              <div class="control" id="control-lines-amplitude-range-id">
+                <label>Amplitude:</label>
+                <div class="range">
+                  <input type="range" min="0" max="1" value="0.3" step="0.01" class="slider" id="lines-amplitude-range-id">
+                  <span class="tooltip"></span>
+                </div>
+              </div>
+              <div class="control" id="control-lines-frequency-range-id">
+                <label>Frequency:</label>
+                <div class="range">
+                  <input type="range" min="0" max="5" value="1" step="0.1" class="slider" id="lines-frequency-range-id">
                   <span class="tooltip"></span>
                 </div>
               </div>

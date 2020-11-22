@@ -6,6 +6,8 @@ const controlId = {
     LINES_COUNT: "lines-count-range-id",
     ORIENTATION: "orientation-range-id",
     LINES_SIDES: "lines-sides-range-id",
+    LINES_AMPLITUDE: "lines-amplitude-range-id",
+    LINES_FREQUENCY: "lines-frequency-range-id",
     AMPLITUDE: "max-amplitude-range-id",
     FREQUENCY: "max-frequency-range-id",
     ANGLE: "angle-range-id",
@@ -21,6 +23,7 @@ enum ELinesPattern {
     STRAIGHT = "0",
     SPIRAL = "1",
     POLYGON = "2",
+    SINES = "3",
 }
 
 type RedrawObserver = () => unknown;
@@ -35,6 +38,8 @@ Page.Tabs.addObserver(controlId.LINES_PATTERN, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_COUNT, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ORIENTATION, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_SIDES, triggerRedraw);
+Page.Range.addLazyObserver(controlId.LINES_AMPLITUDE, triggerRedraw);
+Page.Range.addLazyObserver(controlId.LINES_FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.AMPLITUDE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ANGLE, triggerRedraw);
@@ -44,12 +49,14 @@ Page.Checkbox.addObserver(controlId.INVERT_COLORS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
 Page.Canvas.Observers.canvasResize.push(triggerRedraw);
 
-function udpateLinesSidesVisibility(): void {
+function udpateLinesControlsVisibility(): void {
     const pattern = Page.Tabs.getValues(controlId.LINES_PATTERN)[0] as ELinesPattern;
     Page.Controls.setVisibility(controlId.LINES_SIDES, pattern === ELinesPattern.POLYGON);
+    Page.Controls.setVisibility(controlId.LINES_AMPLITUDE, pattern === ELinesPattern.SINES);
+    Page.Controls.setVisibility(controlId.LINES_FREQUENCY, pattern === ELinesPattern.SINES);
 }
-Page.Tabs.addObserver(controlId.LINES_PATTERN, udpateLinesSidesVisibility);
-udpateLinesSidesVisibility();
+Page.Tabs.addObserver(controlId.LINES_PATTERN, udpateLinesControlsVisibility);
+udpateLinesControlsVisibility();
 
 abstract class Parameters {
     public static addFileUploadObserver(callback: (image: HTMLImageElement) => unknown): void {
@@ -86,6 +93,14 @@ abstract class Parameters {
 
     public static get linesSides(): number {
         return Page.Range.getValue(controlId.LINES_SIDES);
+    }
+
+    public static get linesAmplitude(): number {
+        return Page.Range.getValue(controlId.LINES_AMPLITUDE);
+    }
+
+    public static get linesFrequency(): number {
+        return Page.Range.getValue(controlId.LINES_FREQUENCY);
     }
 
     public static get maxAmplitude(): number {

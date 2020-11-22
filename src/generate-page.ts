@@ -39,7 +39,6 @@ const data = {
             controls: [
                 {
                     type: Demopage.supportedControls.Tabs,
-                    title: "Pattern",
                     id: "lines-pattern-style-tabs-id",
                     unique: true,
                     options: [
@@ -56,6 +55,11 @@ const data = {
                         {
                             label: "Polygon",
                             value: "2",
+                            checked: false,
+                        },
+                        {
+                            label: "Sines",
+                            value: "3",
                             checked: false,
                         },
                     ]
@@ -86,7 +90,25 @@ const data = {
                     max: 15,
                     value: 5,
                     step: 1
-                }
+                },
+                {
+                    type: Demopage.supportedControls.Range,
+                    title: "Amplitude",
+                    id: "lines-amplitude-range-id",
+                    min: 0,
+                    max: 1,
+                    value: 0.3,
+                    step: 0.01
+                },
+                {
+                    type: Demopage.supportedControls.Range,
+                    title: "Frequency",
+                    id: "lines-frequency-range-id",
+                    min: 0,
+                    max: 5,
+                    value: 1,
+                    step: 0.1
+                },
             ]
         },
         {
@@ -127,7 +149,7 @@ const data = {
                     max: 1,
                     value: 0,
                     step: 0.01
-                }
+                },
             ]
         },
         {

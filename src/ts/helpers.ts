@@ -4,6 +4,7 @@ import { ISize } from "./interfaces/i-size";
 import { Parameters, ELinesPattern } from "./parameters";
 import { PatternBase } from "./pattern/pattern-base";
 import { PatternStraightLines } from "./pattern/pattern-straight-lines";
+import { PatternSines } from "./pattern/pattern-sines";
 import { PatternSpiral } from "./pattern/pattern-spiral";
 import { IPlotterInfo } from "./plotter/plotter-base";
 import { PatternPolygon } from "./pattern/pattern-polygon";
@@ -105,8 +106,10 @@ function choosePattern(imageSizeInPlotter: ISize, linesSpacing: number): Pattern
         return new PatternStraightLines(imageSizeInPlotter, linesSpacing);
     } else if (chosenPattern === ELinesPattern.SPIRAL) {
         return new PatternSpiral(imageSizeInPlotter, linesSpacing);
-    } else {
+    } else if (chosenPattern === ELinesPattern.POLYGON) {
         return new PatternPolygon(imageSizeInPlotter, linesSpacing);
+    } else {
+        return new PatternSines(imageSizeInPlotter, linesSpacing);
     }
 }
 
