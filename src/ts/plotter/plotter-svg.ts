@@ -12,6 +12,10 @@ class PlotterSVG extends PlotterBase {
         super();
     }
 
+    // tslint:disable-next-line:no-empty
+    public resize(): void {
+    }
+
     public initialize(infos: IPlotterInfo): void {
         this.hasBlur = infos.blur > 0;
 
@@ -36,7 +40,6 @@ class PlotterSVG extends PlotterBase {
         this.stringParts.push(`\t<g fill="none" stroke="${infos.lineColor}" stroke-width="${infos.lineThickness}" stroke-linejoin="round"${linecap}>\n`);
     }
 
-    // tslint:disable-next-line:no-empty
     public finalize(): void {
         if (this.hasBlur) {
             this.stringParts.push(`\t\t</g>\n`);

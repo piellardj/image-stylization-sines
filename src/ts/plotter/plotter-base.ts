@@ -18,6 +18,7 @@ interface IImageFitting {
 const ANGLE_THRESHOLD = Math.PI * 0.01;
 
 abstract class PlotterBase {
+    public abstract resize(): void;
     public abstract initialize(infos: IPlotterInfo): void;
     public abstract finalize(): void;
 

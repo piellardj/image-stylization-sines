@@ -16,9 +16,17 @@ class PlotterCanvas2D extends PlotterBase {
         this.cssPixel = window.devicePixelRatio ?? 1;
     }
 
-    public initialize(infos: IPlotterInfo): void {
-        this.resizeCanvas();
+    public resize(): void {
+        const actualWidth = Math.floor(this.cssPixel * this.canvas.clientWidth);
+        const actualHeight = Math.floor(this.cssPixel * this.canvas.clientHeight);
 
+        if (this.canvas.width !== actualWidth || this.canvas.height !== actualHeight) {
+            this.canvas.width = actualWidth;
+            this.canvas.height = actualHeight;
+        }
+    }
+
+    public initialize(infos: IPlotterInfo): void {
         this.context.fillStyle = infos.backgroundColor;
         this.context.strokeStyle = infos.lineColor;
         this.context.lineWidth = infos.lineThickness * this.cssPixel;
@@ -64,16 +72,6 @@ class PlotterCanvas2D extends PlotterBase {
     protected endLineInternal(): void {
         this.context.stroke();
         this.context.closePath();
-    }
-
-    public resizeCanvas(): void {
-        const actualWidth = Math.floor(this.cssPixel * this.canvas.clientWidth);
-        const actualHeight = Math.floor(this.cssPixel * this.canvas.clientHeight);
-
-        if (this.canvas.width !== actualWidth || this.canvas.height !== actualHeight) {
-            this.canvas.width = actualWidth;
-            this.canvas.height = actualHeight;
-        }
     }
 }
 

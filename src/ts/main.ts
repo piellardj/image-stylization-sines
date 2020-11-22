@@ -17,8 +17,7 @@ function plot(image: InputImage, plotter: PlotterBase): void {
         return;
     }
 
-    const displayInfos = Helpers.buildPlotterInfos();
-    plotter.initialize(displayInfos);
+    plotter.resize();
 
     const imageFitting = plotter.fitImage(image.sourceImageAspectRatio);
 
@@ -29,6 +28,9 @@ function plot(image: InputImage, plotter: PlotterBase): void {
     const pattern = Helpers.choosePattern(imageFitting, linesSpacing);
 
     image.resize(lines.suggestedImageSize);
+
+    const displayInfos = Helpers.buildPlotterInfos();
+    plotter.initialize(displayInfos);
 
     for (let iLine = 0; iLine < lines.nbLines; iLine++) {
         pattern.drawLine(lines, iLine, image, plotter);
