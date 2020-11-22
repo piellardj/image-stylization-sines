@@ -11,6 +11,7 @@ interface IPlotterInfo {
 interface IImageFitting {
     sizeInPlotter: ISize,
     relativeToAbsolute: (relativeCoords: IPoint) => IPoint;
+    pixelToRelative: (pixelCoords: IPoint) => IPoint;
     zoomFactor: number,
 };
 
@@ -91,6 +92,12 @@ abstract class PlotterBase {
         return {
             sizeInPlotter,
             relativeToAbsolute,
+            pixelToRelative: (pixelCoordinates: IPoint) => {
+                return {
+                    x: pixelCoordinates.x / (sizeInPlotter.width - 1),
+                    y: pixelCoordinates.y / (sizeInPlotter.height - 1),
+                }
+            },
             zoomFactor: minSide / baseMinSide,
         };
     }
@@ -115,4 +122,4 @@ abstract class PlotterBase {
     private _hasStartedALine: boolean = false;
 }
 
-export { PlotterBase, IPlotterInfo, ISize }
+export { PlotterBase, IImageFitting, IPlotterInfo, ISize }
