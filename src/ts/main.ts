@@ -87,8 +87,8 @@ function plot(image: InputImage, plotter: PlotterBase): void {
 }
 
 let inputImage: InputImage = null;
-
 const canvasPlotter = new PlotterCanvas2D();
+
 function plotOnCanvas(): void {
     plot(inputImage, canvasPlotter);
 }
@@ -103,32 +103,9 @@ updateBlur(Parameters.blur);
 Parameters.addDownloadObserver(() => {
     const svgPlotter = new PlotterSVG();
     plot(inputImage, svgPlotter);
-
-    const fileName = "image-as-sines.svg";
-    const fileType = "text/plain";
     const svgString = svgPlotter.export();
-
-    const blob = new Blob([svgString], { type: fileType });
-
-    if (typeof window.navigator !== "undefined" && typeof window.navigator.msSaveBlob !== "undefined") { // for IE
-        window.navigator.msSaveBlob(blob, fileName);
-    } else {
-        const objectUrl = URL.createObjectURL(blob);
-
-        const linkElement = document.createElement('a');
-        linkElement.download = fileName;
-        linkElement.href = objectUrl;
-        linkElement.dataset.downloadurl = `${fileType}:${linkElement.download}:${linkElement.href}`;
-        linkElement.style.display = "none";
-        document.body.appendChild(linkElement);
-        linkElement.click();
-        document.body.removeChild(linkElement);
-
-        // don't forget to free the objectURL after a few seconds
-        setTimeout(() => {
-            URL.revokeObjectURL(objectUrl);
-        }, 5000);
-    }
+    const filename = "image-as-sines.svg";
+    Helpers.downloadTextFile(svgString, filename);
 });
 
 function onImageLoad(image: HTMLImageElement): void {
