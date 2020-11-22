@@ -2,7 +2,7 @@ import "./page-interface-generated";
 
 const controlId = {
     UPLOAD_INPUT_IMAGE: "input-image-upload-button",
-    LINES_PATTERN: "lines-pattern-style-tabs-id",
+    LINES_TYPE: "lines-type-tabs-id",
     LINES_COUNT: "lines-count-range-id",
     ORIENTATION: "orientation-range-id",
     LINES_SIDES: "lines-sides-range-id",
@@ -19,7 +19,7 @@ const controlId = {
     DOWNLOAD: "result-download-id",
 };
 
-enum ELinesPattern {
+enum ELinesType {
     STRAIGHT = "0",
     SPIRAL = "1",
     POLYGON = "2",
@@ -34,7 +34,7 @@ function triggerRedraw(): void {
     }
 }
 
-Page.Tabs.addObserver(controlId.LINES_PATTERN, triggerRedraw);
+Page.Tabs.addObserver(controlId.LINES_TYPE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_COUNT, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ORIENTATION, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINES_SIDES, triggerRedraw);
@@ -50,12 +50,12 @@ Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
 Page.Canvas.Observers.canvasResize.push(triggerRedraw);
 
 function udpateLinesControlsVisibility(): void {
-    const pattern = Page.Tabs.getValues(controlId.LINES_PATTERN)[0] as ELinesPattern;
-    Page.Controls.setVisibility(controlId.LINES_SIDES, pattern === ELinesPattern.POLYGON);
-    Page.Controls.setVisibility(controlId.LINES_AMPLITUDE, pattern === ELinesPattern.SINES);
-    Page.Controls.setVisibility(controlId.LINES_FREQUENCY, pattern === ELinesPattern.SINES);
+    const type = Page.Tabs.getValues(controlId.LINES_TYPE)[0] as ELinesType;
+    Page.Controls.setVisibility(controlId.LINES_SIDES, type === ELinesType.POLYGON);
+    Page.Controls.setVisibility(controlId.LINES_AMPLITUDE, type === ELinesType.SINES);
+    Page.Controls.setVisibility(controlId.LINES_FREQUENCY, type === ELinesType.SINES);
 }
-Page.Tabs.addObserver(controlId.LINES_PATTERN, udpateLinesControlsVisibility);
+Page.Tabs.addObserver(controlId.LINES_TYPE, udpateLinesControlsVisibility);
 udpateLinesControlsVisibility();
 
 abstract class Parameters {
@@ -76,8 +76,8 @@ abstract class Parameters {
         });
     }
 
-    public static get linesPattern(): ELinesPattern {
-        return Page.Tabs.getValues(controlId.LINES_PATTERN)[0] as ELinesPattern;
+    public static get linesType(): ELinesType {
+        return Page.Tabs.getValues(controlId.LINES_TYPE)[0] as ELinesType;
     }
 
     public static get linesCount(): number {
@@ -148,4 +148,4 @@ abstract class Parameters {
     }
 }
 
-export { Parameters, ELinesPattern }
+export { Parameters, ELinesType }

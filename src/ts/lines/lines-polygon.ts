@@ -1,9 +1,9 @@
 import { distance, IPoint } from "../interfaces/i-point";
 import { ISize } from "../interfaces/i-size";
 import { Parameters } from "../parameters";
-import { LineWalker, PatternBase } from "./pattern-base";
+import { LineWalker, LinesBase } from "./lines-base";
 
-class PatternPolygon extends PatternBase {
+class LinesPolygon extends LinesBase {
     private readonly _center: IPoint;
     private readonly _suggestedImageSize: ISize;
     private readonly _linesSpacing: number;
@@ -77,4 +77,4 @@ class PatternPolygon extends PatternBase {
     }
 }
 
-export { PatternPolygon };
+export { LinesPolygon };

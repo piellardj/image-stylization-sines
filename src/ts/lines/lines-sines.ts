@@ -1,6 +1,6 @@
 import { ISize } from "../interfaces/i-size";
 import { IPoint } from "../interfaces/i-point";
-import { LineWalker, PatternBase } from "./pattern-base";
+import { LineWalker, LinesBase } from "./lines-base";
 
 import { Parameters } from "../parameters";
 
@@ -10,7 +10,7 @@ interface ILine {
     length: number;
 }
 
-class PatternSines extends PatternBase {
+class LinesSines extends LinesBase {
     private readonly _suggestedImageSize: ISize;
 
     private readonly _normal: IPoint;
@@ -30,14 +30,14 @@ class PatternSines extends PatternBase {
         };
 
         this._lines = [];
-        this._lines.push(PatternSines.computeLine(0, linesSpacing, this._normal, imageSize));
+        this._lines.push(LinesSines.computeLine(0, linesSpacing, this._normal, imageSize));
 
         const maximumLinesNeeded = this.computeMaximumLinesNeeded(imageSize, linesSpacing);
         const maxAbsLine = maximumLinesNeeded / 2 + 1;
         for (let iAbsLine = 1; iAbsLine < maxAbsLine; iAbsLine++) {
             for (let iSide = -1; iSide <= 2; iSide += 2) {
                 const iLine = iAbsLine * iSide;
-                const line = PatternSines.computeLine(iLine, linesSpacing, this._normal, imageSize);
+                const line = LinesSines.computeLine(iLine, linesSpacing, this._normal, imageSize);
                 this._lines.push(line);
             }
         }
@@ -113,4 +113,4 @@ class PatternSines extends PatternBase {
     }
 }
 
-export { PatternSines }
+export { LinesSines }

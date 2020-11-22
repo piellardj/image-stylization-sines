@@ -1,6 +1,6 @@
 import { ISize } from "../interfaces/i-size";
 import { IPoint, distance } from "../interfaces/i-point";
-import { LineWalker, PatternBase } from "./pattern-base";
+import { LineWalker, LinesBase } from "./lines-base";
 
 import { Parameters } from "../parameters";
 
@@ -16,7 +16,7 @@ enum ELinesOrientation {
     DIAGONAL,
 }
 
-class PatternStraightLines extends PatternBase {
+class LinesStraightLines extends LinesBase {
     private readonly _suggestedImageSize: ISize;
 
     private readonly _normal: IPoint;
@@ -38,14 +38,14 @@ class PatternStraightLines extends PatternBase {
         }
 
         this._lines = [];
-        this._lines.push(PatternStraightLines.computeLine(0, linesSpacing, linesOrientation, this._normal, imageSize));
+        this._lines.push(LinesStraightLines.computeLine(0, linesSpacing, linesOrientation, this._normal, imageSize));
 
-        const maximumLinesNeeded = PatternStraightLines.computeMaximumLinesNeeded(imageSize, linesSpacing);
+        const maximumLinesNeeded = LinesStraightLines.computeMaximumLinesNeeded(imageSize, linesSpacing);
         const maxAbsLine = maximumLinesNeeded / 2 + 1;
         for (let iAbsLine = 1; iAbsLine < maxAbsLine; iAbsLine++) {
             for (let iSide = -1; iSide <= 2; iSide += 2) {
                 const iLine = iAbsLine * iSide;
-                const line = PatternStraightLines.computeLine(iLine, linesSpacing, linesOrientation, this._normal, imageSize);
+                const line = LinesStraightLines.computeLine(iLine, linesSpacing, linesOrientation, this._normal, imageSize);
 
                 const ROUNDING_ERROR = 0.1;
 
@@ -59,7 +59,7 @@ class PatternStraightLines extends PatternBase {
                 this._lines.push(line);
             }
         }
-        this._suggestedImageSize = PatternStraightLines.computeBestImageSize(imageSize, this._lines.length, linesOrientation);
+        this._suggestedImageSize = LinesStraightLines.computeBestImageSize(imageSize, this._lines.length, linesOrientation);
     }
 
     public get suggestedImageSize(): ISize {
@@ -155,4 +155,4 @@ class PatternStraightLines extends PatternBase {
     }
 }
 
-export { PatternStraightLines }
+export { LinesStraightLines }

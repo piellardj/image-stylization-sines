@@ -1,9 +1,9 @@
 import { IPoint } from "../interfaces/i-point";
 import { ISize } from "../interfaces/i-size";
 import { Parameters } from "../parameters";
-import { LineWalker, PatternBase } from "./pattern-base";
+import { LineWalker, LinesBase } from "./lines-base";
 
-class PatternSpiral extends PatternBase {
+class LinesSpiral extends LinesBase {
     private readonly _center: IPoint;
     private readonly _suggestedImageSize: ISize;
     private readonly _radiusGap: number;
@@ -67,4 +67,4 @@ class PatternSpiral extends PatternBase {
     }
 }
 
-export { PatternSpiral }
+export { LinesSpiral }

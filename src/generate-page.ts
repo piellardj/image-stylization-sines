@@ -39,7 +39,7 @@ const data = {
             controls: [
                 {
                     type: Demopage.supportedControls.Tabs,
-                    id: "lines-pattern-style-tabs-id",
+                    id: "lines-type-tabs-id",
                     unique: true,
                     options: [
                         {

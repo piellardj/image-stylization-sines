@@ -33,9 +33,9 @@ function plot(image: InputImage, plotter: PlotterBase): void {
 
     const maxAmplitude = 0.5 * (linesSpacing - displayInfos.lineThickness) * Parameters.maxAmplitude;
 
-    const pattern = Helpers.choosePattern(imageFitting.sizeInPlotter, linesSpacing);
+    const lines = Helpers.chooseLines(imageFitting.sizeInPlotter, linesSpacing);
 
-    image.resize(pattern.suggestedImageSize);
+    image.resize(lines.suggestedImageSize);
 
     const samplingFunction = Helpers.chooseBestSamplingFunction();
     const normalRotation = Helpers.computeNormalRotationFunction();
@@ -43,9 +43,9 @@ function plot(image: InputImage, plotter: PlotterBase): void {
 
     const samplesPerPixel = Math.max(1, 2 * maxFrequency);
     const step = 1 / samplesPerPixel;
-    for (let iLine = 0; iLine < pattern.nbLines; iLine++) {
+    for (let iLine = 0; iLine < lines.nbLines; iLine++) {
         let phase = 0;
-        pattern.walkOnLine(iLine, step, (point: IPoint, normal: IPoint) => {
+        lines.walkOnLine(iLine, step, (point: IPoint, normal: IPoint) => {
             const normalizedCoords: IPoint = {
                 x: point.x / (imageFitting.sizeInPlotter.width - 1),
                 y: point.y / (imageFitting.sizeInPlotter.height - 1),

@@ -3,7 +3,7 @@ import { ISize } from "../interfaces/i-size";
 
 type LineWalker = (point: IPoint, normal: IPoint) => unknown;
 
-abstract class PatternBase {
+abstract class LinesBase {
     /** Returns the suggested image size for optimum quality */
     public abstract get suggestedImageSize(): ISize;
     public abstract get nbLines(): number;
@@ -15,4 +15,4 @@ abstract class PatternBase {
     public abstract walkOnLine(lineId: number, step: number, callback: LineWalker): void;
 }
 
-export { LineWalker, PatternBase }
+export { LineWalker, LinesBase }

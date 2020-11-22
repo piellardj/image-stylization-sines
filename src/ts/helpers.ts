@@ -1,13 +1,13 @@
 import { InputImage } from "./input-image";
 import { IPoint } from "./interfaces/i-point";
 import { ISize } from "./interfaces/i-size";
-import { Parameters, ELinesPattern } from "./parameters";
-import { PatternBase } from "./pattern/pattern-base";
-import { PatternStraightLines } from "./pattern/pattern-straight-lines";
-import { PatternSines } from "./pattern/pattern-sines";
-import { PatternSpiral } from "./pattern/pattern-spiral";
+import { Parameters, ELinesType } from "./parameters";
+import { LinesBase } from "./lines/lines-base";
+import { LinesStraightLines } from "./lines/lines-straight-lines";
+import { LinesSines } from "./lines/lines-sines";
+import { LinesSpiral } from "./lines/lines-spiral";
 import { IPlotterInfo } from "./plotter/plotter-base";
-import { PatternPolygon } from "./pattern/pattern-polygon";
+import { LinesPolygon } from "./lines/lines-polygon";
 
 function buildPlotterInfos(): IPlotterInfo {
     return {
@@ -100,23 +100,23 @@ function computeWaveFunction(): WaveFunction {
     };
 }
 
-function choosePattern(imageSizeInPlotter: ISize, linesSpacing: number): PatternBase {
-    const chosenPattern = Parameters.linesPattern;
-    if (chosenPattern === ELinesPattern.STRAIGHT) {
-        return new PatternStraightLines(imageSizeInPlotter, linesSpacing);
-    } else if (chosenPattern === ELinesPattern.SPIRAL) {
-        return new PatternSpiral(imageSizeInPlotter, linesSpacing);
-    } else if (chosenPattern === ELinesPattern.POLYGON) {
-        return new PatternPolygon(imageSizeInPlotter, linesSpacing);
+function chooseLines(imageSizeInPlotter: ISize, linesSpacing: number): LinesBase {
+    const chosenType = Parameters.linesType;
+    if (chosenType === ELinesType.STRAIGHT) {
+        return new LinesStraightLines(imageSizeInPlotter, linesSpacing);
+    } else if (chosenType === ELinesType.SPIRAL) {
+        return new LinesSpiral(imageSizeInPlotter, linesSpacing);
+    } else if (chosenType === ELinesType.POLYGON) {
+        return new LinesPolygon(imageSizeInPlotter, linesSpacing);
     } else {
-        return new PatternSines(imageSizeInPlotter, linesSpacing);
+        return new LinesSines(imageSizeInPlotter, linesSpacing);
     }
 }
 
 export {
     buildPlotterInfos,
     chooseBestSamplingFunction,
-    choosePattern,
+    chooseLines,
     computeNormalRotationFunction,
     computeWaveFunction,
     fitImageInPlotter,
