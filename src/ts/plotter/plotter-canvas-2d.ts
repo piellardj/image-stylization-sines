@@ -1,7 +1,6 @@
 import { PlotterBase, IPlotterInfo, ISize } from "./plotter-base";
 
 import "../page-interface-generated";
-import { Parameters } from "../parameters";
 
 class PlotterCanvas2D extends PlotterBase {
     private readonly canvas: HTMLCanvasElement;
@@ -31,7 +30,7 @@ class PlotterCanvas2D extends PlotterBase {
         this.context.strokeStyle = infos.lineColor;
         this.context.lineWidth = infos.lineThickness * this.cssPixel;
         this.context.lineJoin = "round";
-        this.context.lineCap = Parameters.roundLinecap ? "round" : "butt";
+        this.context.lineCap = infos.roundLinecap ? "round" : "butt";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 

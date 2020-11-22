@@ -14,7 +14,6 @@ const controlId = {
     ANGLE: "angle-range-id",
     WAVE_SQUARENESS: "wave-squareness-range-id",
     LINE_THICKNESS: "line-thickness-range-id",
-    ROUND_LINECAP: "round-linecap-checkbox-id",
     INVERT_COLORS: "invert-colors-checkbox-id",
     BLUR: "blur-range-id",
     TRUE_INTENSITY: "true-intensity-checkbox-id",
@@ -53,7 +52,6 @@ Page.Range.addLazyObserver(controlId.FREQUENCY, triggerRedraw);
 Page.Range.addLazyObserver(controlId.ANGLE, triggerRedraw);
 Page.Range.addLazyObserver(controlId.WAVE_SQUARENESS, triggerRedraw);
 Page.Range.addLazyObserver(controlId.LINE_THICKNESS, triggerRedraw);
-Page.Checkbox.addObserver(controlId.ROUND_LINECAP, triggerRedraw);
 Page.Checkbox.addObserver(controlId.INVERT_COLORS, triggerRedraw);
 Page.Checkbox.addObserver(controlId.TRUE_INTENSITY, triggerRedraw);
 Page.Canvas.Observers.canvasResize.push(triggerRedraw);
@@ -125,10 +123,6 @@ abstract class Parameters {
 
     public static get lineThickness(): number {
         return Page.Range.getValue(controlId.LINE_THICKNESS);
-    }
-
-    public static get roundLinecap(): boolean {
-        return Page.Checkbox.isChecked(controlId.ROUND_LINECAP);
     }
 
     public static get invertColors(): boolean {

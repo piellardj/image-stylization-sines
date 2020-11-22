@@ -43,6 +43,7 @@ class PatternWave extends PatternBase {
             backgroundColor: Parameters.invertColors ? "black" : "white",
             lineColor: Parameters.invertColors ? "white" : "black",
             lineThickness: Parameters.lineThickness,
+            roundLinecap: true,
             blur: Parameters.blur,
         };
     }

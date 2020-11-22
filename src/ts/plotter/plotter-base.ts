@@ -5,6 +5,7 @@ interface IPlotterInfo {
     backgroundColor: string;
     lineColor: string;
     lineThickness: number;
+    roundLinecap: boolean;
     blur: number;
 }
 

@@ -67,6 +67,7 @@ class PatternDithering extends PatternBase {
             backgroundColor: Parameters.invertColors ? "black" : "white",
             lineColor: Parameters.invertColors ? "white" : "black",
             lineThickness: this.linesThickness,
+            roundLinecap: false,
             blur: Parameters.blur,
         };
     }
