@@ -25,6 +25,7 @@ class PatternDithering extends PatternBase {
 
     private readonly linesThickness: number;
 
+    private readonly samplesPerPortion: number;
     private readonly step: number;
 
     private static readonly ditheringPatterns: number[][] = [
@@ -57,11 +58,14 @@ class PatternDithering extends PatternBase {
         this.linesThickness = Math.max(1, Parameters.maxAmplitude * linesSpacing);
 
         const MIN_FREQUENCY = 10;
-        const MAX_FREQUENCY = 500;
+        const MAX_FREQUENCY = 1000;
         const xFrequency = Parameters.maxFrequency;
         const baseMaxFrequency = MIN_FREQUENCY * (1 - xFrequency) + MAX_FREQUENCY * xFrequency;
-        const frequency = baseMaxFrequency / imageFitting.zoomFactor;
-        this.step = 1 / frequency;
+
+        const MIN_SAMPLE_FREQUENCY = 1000;
+        this.samplesPerPortion = Math.ceil(MIN_SAMPLE_FREQUENCY / baseMaxFrequency);
+        const sampleFrequency = baseMaxFrequency * this.samplesPerPortion / imageFitting.zoomFactor;
+        this.step = 1 / sampleFrequency;
     }
 
     public buildPlotterInfos(): IPlotterInfo {
@@ -78,8 +82,10 @@ class PatternDithering extends PatternBase {
         if (typeof portionsSeeds[lineId] === "undefined") {
             portionsSeeds[lineId] = Math.round(1000 * Math.random());
         }
-        let iPortion = portionsSeeds[lineId]; // avoid alignments that could lead to visual artifacts
+        const portionSeed = portionsSeeds[lineId]; // avoid alignments that could lead to visual artifacts
 
+        let iSample = 0;
+        let isDarkPortion = false;
         lines.walkOnLine(lineId, this.step, (point: IPoint) => {
             const normalizedCoords = this.imageFitting.pixelToRelative(point);
 
@@ -88,12 +94,16 @@ class PatternDithering extends PatternBase {
                 if (plotter.hasStartedALine) {
                     plotter.endLine();
                 }
+                isDarkPortion = false;
             } else {
-                const localDarkness = clamp(0, 1, this.samplingFunction(image, normalizedCoords));
+                if (iSample % this.samplesPerPortion < 0.1) {
+                    const localDarkness = clamp(0, 1, this.samplingFunction(image, normalizedCoords));
+                    const iQuantifiedColor = Math.floor(localDarkness * 0.99 * PatternDithering.ditheringPatterns.length);
+                    const ditheringPattern = PatternDithering.ditheringPatterns[iQuantifiedColor];
 
-                const iQuantifiedColor = Math.floor(localDarkness * 0.99 * PatternDithering.ditheringPatterns.length);
-                const ditheringPattern = PatternDithering.ditheringPatterns[iQuantifiedColor];
-                const isDarkPortion = ditheringPattern[Math.floor(iPortion % ditheringPattern.length)] > 0.5;
+                    const iPortion = Math.floor(iSample / this.samplesPerPortion) + portionSeed;
+                    isDarkPortion = ditheringPattern[Math.floor(iPortion % ditheringPattern.length)] > 0.5;
+                }
 
                 if (isDarkPortion) {
                     if (!plotter.hasStartedALine) {
@@ -107,7 +117,7 @@ class PatternDithering extends PatternBase {
                     plotter.endLine();
                 }
 
-                iPortion++;
+                iSample++;
             }
         });
 
