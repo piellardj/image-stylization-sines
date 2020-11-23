@@ -158,4 +158,30 @@ Page.Tabs.addObserver(controlId.LINES_TYPE, udpateControlsVisibility);
 Page.Tabs.addObserver(controlId.PATTERN, udpateControlsVisibility);
 udpateControlsVisibility();
 
+let lastAmplitude: number | null = null;
+let lastFrequency: number | null = null;
+Page.Tabs.addObserver(controlId.PATTERN, function updateControlsValue(): void {
+    const pattern = Parameters.pattern;
+
+    const previousAmplitude = Page.Range.getValue(controlId.AMPLITUDE);
+    const previousFrequency = Page.Range.getValue(controlId.FREQUENCY);
+
+    let newAmplitude = lastAmplitude;
+    let newFrequency = lastFrequency;
+    if (pattern === EPattern.WAVES) {
+        newAmplitude = (newAmplitude === null) ? 1 : newAmplitude;
+        newFrequency = (newFrequency === null) ? 0.4 : newFrequency;
+    } else if (pattern === EPattern.DITHERING) {
+        newAmplitude = (newAmplitude === null) ? 0.5 : newAmplitude;
+        newFrequency = (newFrequency === null) ? 0.5 : newFrequency;
+    }
+
+    Page.Range.setValue(controlId.AMPLITUDE, newAmplitude);
+    Page.Range.setValue(controlId.FREQUENCY, newFrequency);
+    lastAmplitude = previousAmplitude;
+    lastFrequency = previousFrequency;
+
+    triggerRedraw();
+});
+
 export { Parameters, ELinesType, EPattern }
