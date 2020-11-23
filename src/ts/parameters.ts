@@ -144,6 +144,8 @@ abstract class Parameters {
 }
 
 function udpateControlsVisibility(): void {
+    Page.Controls.setVisibility(controlId.PATTERN, false);
+
     const type = Parameters.linesType;
     Page.Controls.setVisibility(controlId.LINES_SIDES, type === ELinesType.POLYGON);
     Page.Controls.setVisibility(controlId.LINES_AMPLITUDE, type === ELinesType.SINES);
