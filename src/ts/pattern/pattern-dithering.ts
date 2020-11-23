@@ -73,7 +73,7 @@ class PatternDithering extends PatternBase {
     }
 
     public drawLine(lines: LinesBase, lineId: number, image: InputImage, plotter: PlotterBase): void {
-        let iPortion = Math.round(1000 * Math.random());
+        let iPortion = 13 * lineId; // attempt to avoid alignment (that could lead to visual artifacts) in a deterministic way
 
         lines.walkOnLine(lineId, this.step, (point: IPoint) => {
             const normalizedCoords = this.imageFitting.pixelToRelative(point);
