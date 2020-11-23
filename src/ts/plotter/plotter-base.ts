@@ -16,7 +16,7 @@ interface IImageFitting {
     zoomFactor: number,
 };
 
-const ANGLE_THRESHOLD = Math.PI * 0.01;
+const ANGLE_THRESHOLD = Math.PI * 0.003;
 
 abstract class PlotterBase {
     public abstract resize(): void;
