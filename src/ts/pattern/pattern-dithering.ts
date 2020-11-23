@@ -16,6 +16,8 @@ function clamp(min: number, max: number, x: number): number {
     return x;
 }
 
+const portionsSeeds: number[] = [];
+
 class PatternDithering extends PatternBase {
     private readonly samplingFunction: SamplingFunction;
 
@@ -73,7 +75,10 @@ class PatternDithering extends PatternBase {
     }
 
     public drawLine(lines: LinesBase, lineId: number, image: InputImage, plotter: PlotterBase): void {
-        let iPortion = 13 * lineId; // attempt to avoid alignment (that could lead to visual artifacts) in a deterministic way
+        if (typeof portionsSeeds[lineId] === "undefined") {
+            portionsSeeds[lineId] = Math.round(1000 * Math.random());
+        }
+        let iPortion = portionsSeeds[lineId]; // avoid alignments that could lead to visual artifacts
 
         lines.walkOnLine(lineId, this.step, (point: IPoint) => {
             const normalizedCoords = this.imageFitting.pixelToRelative(point);
