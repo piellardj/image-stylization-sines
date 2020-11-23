@@ -112,18 +112,10 @@ class PatternDithering extends PatternBase {
     }
 
     private static chooseBestSamplingFunction(): SamplingFunction {
-        if (Parameters.trueIntensity) {
-            if (Parameters.invertColors) {
-                return (inputImage: InputImage, coords: IPoint) => Math.sqrt(inputImage.sample(coords));
-            } else {
-                return (inputImage: InputImage, coords: IPoint) => Math.sqrt(1.001 - inputImage.sample(coords));
-            }
+        if (Parameters.invertColors) {
+            return (inputImage: InputImage, coords: IPoint) => inputImage.sample(coords);
         } else {
-            if (Parameters.invertColors) {
-                return (inputImage: InputImage, coords: IPoint) => inputImage.sample(coords);
-            } else {
-                return (inputImage: InputImage, coords: IPoint) => 1 - inputImage.sample(coords);
-            }
+            return (inputImage: InputImage, coords: IPoint) => 1 - inputImage.sample(coords);
         }
     }
 }

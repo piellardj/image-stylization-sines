@@ -188,12 +188,6 @@ const data = {
                     checked: false
                 },
                 {
-                    type: Demopage.supportedControls.Checkbox,
-                    title: "True intensity",
-                    id: "true-intensity-checkbox-id",
-                    checked: true
-                },
-                {
                     type: Demopage.supportedControls.Range,
                     title: "Blur",
                     id: "blur-range-id",
