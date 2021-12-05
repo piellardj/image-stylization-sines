@@ -38,8 +38,8 @@ function downloadTextFile(content: string, filename: string): void {
 
     const blob = new Blob([content], { type: fileType });
 
-    if (typeof window.navigator !== "undefined" && typeof window.navigator.msSaveBlob !== "undefined") { // for IE
-        window.navigator.msSaveBlob(blob, filename);
+    if (typeof window.navigator !== "undefined" && typeof (window.navigator as any).msSaveBlob !== "undefined") { // for IE
+        (window.navigator as any).msSaveBlob(blob, filename);
     } else {
         const objectUrl = URL.createObjectURL(blob);
 
