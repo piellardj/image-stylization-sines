@@ -11,7 +11,7 @@ class InputImage {
 
     public constructor(image: HTMLImageElement) {
         this.hiddenCanvas = document.createElement("canvas");
-        this.hiddenContext = this.hiddenCanvas.getContext("2d");
+        this.hiddenContext = this.hiddenCanvas.getContext("2d", { willReadFrequently: true });
         this.sourceImage = image;
         this._size = {
             width: 0,
