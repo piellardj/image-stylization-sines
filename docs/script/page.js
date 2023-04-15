@@ -1,4 +1,3 @@
-
 var Page;
 (function (Page) {
     var Demopage;
@@ -838,6 +837,7 @@ var Page;
         Checkbox_1.clearStoredState = clearStoredState;
     })(Checkbox = Page.Checkbox || (Page.Checkbox = {}));
 })(Page || (Page = {}));
+
 
 
 var Page;
