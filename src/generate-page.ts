@@ -11,6 +11,10 @@ const data = {
         "The result can be exported in the SVG format."
     ],
     githubProjectName: "image-stylization-sines",
+    readme: {
+        filepath: path.join(__dirname, "..", "README.md"),
+        branchName: "master"
+    },
     additionalLinks: [],
     styleFiles: [],
     scriptFiles: [
